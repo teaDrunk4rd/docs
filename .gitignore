@@ -1,0 +1,7 @@
+/src/main/resources/app/node_modules/*
+/target/*
+/src/main/resources/app/package-lock.json
+/src/main/resources/app/.idea/*
+/src/main/resources/app/.eslintcache
+/src/main/resources/app/src/react-app-env.d.ts
+.idea
