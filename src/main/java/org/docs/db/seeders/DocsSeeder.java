@@ -31,6 +31,7 @@ public class DocsSeeder implements Seeder {
         if (docRepo.count() == 0) {
             Set<Event> events = new HashSet<>();
             eventRepo.findAll().iterator().forEachRemaining(events::add);
+
             docRepo.saveAll(Arrays.asList(
                 new Doc("doc1", "some content1", roleRepo.findByKey("expert"), dayRepo.findByKey("c-2"), events.stream().skip(2).limit(2).collect(Collectors.toSet())),
                 new Doc("doc2", "some content2", roleRepo.findByKey("expert"), dayRepo.findByKey("c-1"), events.stream().limit(2).collect(Collectors.toSet())),

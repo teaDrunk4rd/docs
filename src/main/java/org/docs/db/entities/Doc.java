@@ -31,11 +31,11 @@ public class Doc {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean isSigned = false;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = { CascadeType.MERGE })
     @JoinTable(
-        name = "event_docs",
-        joinColumns = { @JoinColumn(name = "doc_id") },
-        inverseJoinColumns = { @JoinColumn(name = "event_id") }
+        name = "eventDocs",
+        joinColumns = { @JoinColumn(name = "docId", nullable = false) },
+        inverseJoinColumns = { @JoinColumn(name = "eventId", nullable = false) }
     )
     Set<Event> events = new HashSet<>();
 
@@ -64,6 +64,14 @@ public class Doc {
         this.day = day;
         this.PIN = PIN;
         this.isSigned = isSigned;
+    }
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
     }
 
     public String getName() {

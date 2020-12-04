@@ -46,7 +46,7 @@ public class User {
     @JoinColumn(name = "RoleId", nullable = false)
     private Role role;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = { CascadeType.MERGE })
     @JoinTable(
             name = "user_events",
             joinColumns = { @JoinColumn(name = "user_id") },
