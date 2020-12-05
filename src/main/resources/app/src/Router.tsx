@@ -4,6 +4,7 @@ import NavMenu from "./components/NavMenu";
 import Login from "./components/pages/Login";
 import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./components/pages/Profile";
+import SignUp from "./components/pages/SignUp";
 
 
 export class Router extends Component {
@@ -15,6 +16,7 @@ export class Router extends Component {
                     {this.props.children}
                     <Switch>
                         <Route exact path="/login" component={Login}/>
+                        <Route exact path="/signup" component={SignUp}/>
                         <PrivateRoute exact path="/profile" component={Profile}/>
                     </Switch>
                 </div>

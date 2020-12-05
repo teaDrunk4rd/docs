@@ -130,19 +130,6 @@ export default class Profile extends Component<any, ProfileState> {
 
                             <div className="form-group row">
                                 <label className="col-md-4 col-form-label text-md-right">
-                                    Имя
-                                </label>
-                                <div className="col-md-6">
-                                    <input type="text"
-                                           autoComplete="false"
-                                           value={firstName}
-                                           onChange={event => this.setState({firstName: event.target.value})}
-                                           className="form-control "/>
-                                </div>
-                            </div>
-
-                            <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">
                                     Фамилия
                                 </label>
                                 <div className="col-md-6">
@@ -151,6 +138,19 @@ export default class Profile extends Component<any, ProfileState> {
                                            value={lastName}
                                            onChange={event => this.setState({lastName: event.target.value})}
                                            className="form-control"/>
+                                </div>
+                            </div>
+
+                            <div className="form-group row">
+                                <label className="col-md-4 col-form-label text-md-right">
+                                    Имя
+                                </label>
+                                <div className="col-md-6">
+                                    <input type="text"
+                                           autoComplete="false"
+                                           value={firstName}
+                                           onChange={event => this.setState({firstName: event.target.value})}
+                                           className="form-control "/>
                                 </div>
                             </div>
 
@@ -173,7 +173,7 @@ export default class Profile extends Component<any, ProfileState> {
                                 </label>
                                 <div className="col-md-6">
                                     <textarea
-                                        value={about}
+                                        value={about || ''}
                                         onChange={event => this.setState({about: event.target.value})}
                                         className="form-control "/>
                                 </div>

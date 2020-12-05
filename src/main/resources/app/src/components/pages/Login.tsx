@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import {Link} from "react-router-dom";
 
 interface LoginState {
     email: string,
@@ -63,6 +64,12 @@ export default class Login extends Component<any, LoginState> {
                                            autoComplete="current-password"
                                            className="form-control "/>
                                 </div>
+                            </div>
+
+                            <div className="form-group d-flex justify-content-end col-10 pr-2">
+                                <Link to="/signup">
+                                    Регистрация
+                                </Link>
                             </div>
 
                             <div className="form-group row mb-0">
