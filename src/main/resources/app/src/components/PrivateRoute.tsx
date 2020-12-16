@@ -3,17 +3,23 @@ import React from 'react';
 
 
 interface PrivateRouteProps extends RouteProps {
-    component: any;
-    path: any;
+    component: any,
+    path: any,
+    roles?: any
 }
 
 
 const PrivateRoute = (props: PrivateRouteProps) => {  // TODO: send request to back
-    const { component: Component, path, ...rest } = props;
+    const { component: Component, path, roles, ...rest } = props;
     return (
         <Route path={path}
-            {...rest}
-            render={(props) => localStorage["user"] ? (<Component {...props} />) : (<Redirect to='/login'/>)}
+               {...rest}
+               render={
+                   (props) => localStorage["user"] &&
+                   (roles === undefined || roles.split(',').includes(JSON.parse(localStorage["user"])["role"]))
+                       ? <Component {...props} />
+                       : <Redirect to='/login'/>
+               }
         />
     );
 };

@@ -1,0 +1,60 @@
+:root {
+    --plus: url("data:image/svg+xml,<svg width='2em' height='2em' viewBox='0 0 16 16' class='bi bi-plus' fill='green' xmlns='http://www.w3.org/2000/svg'> <path fill-rule='evenodd' d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'/></svg>");
+    --minus: url('data:image/svg+xml,<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-dash" fill="crimson" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/></svg>');
+    --plus-gray: url("data:image/svg+xml,<svg width='2em' height='2em' viewBox='0 0 16 16' class='bi bi-plus' fill='gray' xmlns='http://www.w3.org/2000/svg'> <path fill-rule='evenodd' d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'/></svg>");
+    --minus-gray: url('data:image/svg+xml,<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-dash" fill="gray" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/></svg>');
+}
+
+body {
+    background-color: #fcfcfc !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+tr.table-default {
+    background-color: #f8f8f8 !important;
+}
+
+th, td {
+    vertical-align: middle !important;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.add-icon, .remove-icon {
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+}
+
+.add-icon.disable, .remove-icon.disable {
+    background-color: lightgray;
+}
+
+.add-icon {
+    background-image: var(--plus);
+}
+
+.remove-icon {
+    background-image: var(--minus);
+}
+
+.add-icon.disable {
+    background-image: var(--plus-gray);
+}
+
+.remove-icon.disable {
+    background-image: var(--minus-gray);
+}
+
+.MuiFormControl-root.MuiTextField-root {
+    width: 100%;
+}
+
+.MuiOutlinedInput-input {
+    padding: 7px 14px !important;
+}
