@@ -5,17 +5,21 @@ import java.util.Date;
 public class EventResponse {
     private String name;
     private Date startDate;
+    private Date cminus1Date;
     private Date c1Date;
+    private Date c2Date;
     private Date cplus1Date;
     private Date finishDate;
 
     public EventResponse() {
     }
 
-    public EventResponse(String name, Date startDate, Date c1Date, Date cplus1Date, Date finishDate) {
+    public EventResponse(String name, Date startDate, Date cminus1Date, Date c1Date, Date c2Date, Date cplus1Date, Date finishDate) {
         this.name = name;
         this.startDate = startDate;
+        this.cminus1Date = cminus1Date;
         this.c1Date = c1Date;
+        this.c2Date = c2Date;
         this.cplus1Date = cplus1Date;
         this.finishDate = finishDate;
     }
@@ -36,12 +40,28 @@ public class EventResponse {
         this.startDate = startDate;
     }
 
+    public Date getCminus1Date() {
+        return cminus1Date;
+    }
+
+    public void setCminus1Date(Date cminus1Date) {
+        this.cminus1Date = cminus1Date;
+    }
+
     public Date getC1Date() {
         return c1Date;
     }
 
     public void setC1Date(Date c1Date) {
         this.c1Date = c1Date;
+    }
+
+    public Date getC2Date() {
+        return c2Date;
+    }
+
+    public void setC2Date(Date c2Date) {
+        this.c2Date = c2Date;
     }
 
     public Date getCplus1Date() {

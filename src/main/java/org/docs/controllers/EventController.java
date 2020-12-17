@@ -42,14 +42,13 @@ public class EventController {
     public ResponseEntity<?> getEvents() {
         User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).get();
 
-        if (user.getRole().getERole() == ERole.ROLE_ADMIN) {
-            return ResponseEntity.ok(
-                eventRepo.findAll().stream()
-                    .sorted(Comparator.comparing(Event::getName))
-                    .map(e -> new EventsResponse(e.getId(), e.getName(), e.getDates(), e.getUsers().size()))
-            );
-        }
-        return null;
+        return ResponseEntity.ok(
+            eventRepo.findAll().stream()
+                .filter(e -> user.getRole().getERole() == ERole.ROLE_ADMIN ||
+                            e.getUsers().stream().anyMatch(u -> u.getId().equals(user.getId())))
+                .sorted(Comparator.comparing(Event::getName))
+                .map(e -> new EventsResponse(e.getId(), e.getName(), e.getDates(), e.getUsers().size()))
+        );
     }
 
     @GetMapping("/events/event")
@@ -66,10 +65,12 @@ public class EventController {
         return ResponseEntity.ok(
             new EventResponse(
                 event.getName(),
-                event.getEventDays().stream().filter(e -> e.getDay().getKey().equals("c-2")).iterator().next().getDate(),
-                event.getEventDays().stream().filter(e -> e.getDay().getKey().equals("c1")).iterator().next().getDate(),
-                event.getEventDays().stream().filter(e -> e.getDay().getKey().equals("c+1")).iterator().next().getDate(),
-                event.getEventDays().stream().filter(e -> e.getDay().getKey().equals("c+2")).iterator().next().getDate()
+                event.getEventDay("c-2"),
+                event.getEventDay("c-1"),
+                event.getEventDay("c1"),
+                event.getEventDay("c2"),
+                event.getEventDay("c+1"),
+                event.getEventDay("c+2")
             )
         );
     }

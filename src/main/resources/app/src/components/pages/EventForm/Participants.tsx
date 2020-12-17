@@ -10,7 +10,8 @@ import {Modal} from "@material-ui/core";
 import UnsignedUsers from "./UnsignedUsers";
 
 interface ParticipantsProps {
-    eventId: number
+    eventId: number,
+    readonly?: boolean
 }
 
 interface ParticipantsState {
@@ -64,7 +65,9 @@ export default class Participants extends Component<ParticipantsProps, Participa
                     <tbody>
                     {participants && participants.map((participant, index) => {
                         return (
-                            <tr className={`cursor-pointer ${participant === selectedParticipant ? 'table-primary' : ''}`}
+                            <tr className={
+                                !this.props.readonly && participant === selectedParticipant ? 'cursor-pointer table-primary' :
+                                !this.props.readonly ? 'cursor-pointer' : ''}
                                 onClick={() => this.setState({selectedParticipant: participant})}
                                 key={index}>
                                 <td>{participant.user}</td>
@@ -75,11 +78,15 @@ export default class Participants extends Component<ParticipantsProps, Participa
                     </tbody>
                 </table>
 
-                <div className='ml-4 mt-3'>
-                    <div className="add-icon shadow mb-3" onClick={() => this.setState({openAddModal: true})} />
-                    <div className={`remove-icon shadow ${selectedParticipant == null ? 'disable' : ''}`}
-                         onClick={() => this.setState({openDeleteDialog: true})} />
-                </div>
+                {
+                    !this.props.readonly ? (
+                        <div className='ml-4 mt-3'>
+                            <div className="add-icon shadow mb-3" onClick={() => this.setState({openAddModal: true})} />
+                            <div className={`remove-icon shadow ${selectedParticipant == null ? 'disable' : ''}`}
+                                 onClick={() => this.setState({openDeleteDialog: true})} />
+                        </div>
+                    ) : <div/>
+                }
 
                 <Dialog
                     open={this.state.openDeleteDialog}

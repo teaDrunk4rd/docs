@@ -32,7 +32,7 @@ export default class Events extends Component<any, EventsState> {
             <div className="m-auto">
                 {!this.state.isLoaded ? <Preloader/> : <div/>}
                 <div className="h3 font-weight-bold mb-3">События</div>
-                <table className="table table-hover">
+                <table className="table table-hover bg-white">
                     <thead className="table-dark">
                     <tr>
                         <th>Событие</th>
@@ -46,7 +46,7 @@ export default class Events extends Component<any, EventsState> {
                             <tr className="cursor-pointer"
                                 key={index}
                                 onClick={(e) => this.props.history.push({
-                                    pathname: '/event',
+                                    pathname: JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" ? "/eventForm" : "/event",
                                     search: `?id=${event.id}`,
                                     state: { id: event.id }
                                 })}>

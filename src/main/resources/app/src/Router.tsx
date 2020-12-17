@@ -7,6 +7,7 @@ import Profile from "./components/pages/Profile";
 import SignUp from "./components/pages/SignUp";
 import Events from "./components/pages/Events";
 import EventForm from "./components/pages/EventForm/EventForm";
+import Event from "./components/pages/Event";
 
 
 export class Router extends Component {
@@ -21,7 +22,8 @@ export class Router extends Component {
                         <Route exact path="/signup" component={SignUp}/>
                         <PrivateRoute exact path="/profile" component={Profile}/>
                         <PrivateRoute exact path="/" component={Events}/>
-                        <PrivateRoute exact path="/event" component={EventForm}/>
+                        <PrivateRoute exact path="/eventForm" component={EventForm}/>
+                        <PrivateRoute exact path="/event" component={Event}/>
                     </Switch>
                 </div>
             </div>

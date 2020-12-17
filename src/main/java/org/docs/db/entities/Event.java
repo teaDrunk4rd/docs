@@ -2,9 +2,7 @@ package org.docs.db.entities;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -108,5 +106,10 @@ public class Event {
 
     public void setAvatar(File avatar) {
         this.avatar = avatar;
+    }
+    
+    public Date getEventDay(String key) {
+        Iterator<EventDay> iterator = this.getEventDays().stream().filter(e -> e.getDay().getKey().equals(key)).iterator();
+        return iterator.hasNext() ? iterator.next().getDate() : null;
     }
 }
