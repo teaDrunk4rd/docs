@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import axios from "axios";
 
 interface UnsignedUsersProps {
-    eventId: number,
     participants: Array<any>
 }
 
@@ -24,7 +23,6 @@ export default class UnsignedUsers extends Component<UnsignedUsersProps, Unsigne
 
     componentDidMount() {
         axios.post('events/event/users', {
-            eventId: this.props.eventId,
             participantIds: this.props.participants.map(p => p['id'])
         }).then(response => {
             if (response.status === 200)

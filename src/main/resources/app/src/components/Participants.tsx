@@ -7,7 +7,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {Modal} from "@material-ui/core";
-import UnsignedUsers from "./UnsignedUsers";
+import UnsignedUsers from "./pages/EventForm/UnsignedUsers";
 
 interface ParticipantsProps {
     eventId: number,
@@ -38,12 +38,13 @@ export default class Participants extends Component<ParticipantsProps, Participa
     }
 
     componentDidMount() {
-        axios.get(`events/event/participants?id=${this.props.eventId}`).then(response => {
-            if (response.status === 200)
-                this.setState({
-                    participants: response.data
-                });
-        });
+        if (this.props.eventId !== undefined)
+            axios.get(`events/event/participants?id=${this.props.eventId}`).then(response => {
+                if (response.status === 200)
+                    this.setState({
+                        participants: response.data
+                    });
+            });
     }
 
     assignUsers(event: any) {
@@ -123,8 +124,7 @@ export default class Participants extends Component<ParticipantsProps, Participa
                         <div className="mt-2">
                             <i>Отметьте пользователей, которых Вы хотите записать</i>
                         </div>
-                        <UnsignedUsers ref={this.UnsignedUsers} eventId={this.props.eventId}
-                                       participants={participants} />
+                        <UnsignedUsers ref={this.UnsignedUsers} participants={participants} />
                         <div className="d-flex justify-content-end mb-3">
                             <button className="btn btn-primary" onClick={this.assignUsers}>
                                 Записать

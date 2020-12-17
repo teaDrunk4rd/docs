@@ -9,7 +9,7 @@ import org.docs.db.repos.EventDayRepo;
 import org.docs.db.repos.EventRepo;
 import org.docs.db.repos.UserRepo;
 import org.docs.payload.request.UnsignedUsersRequest;
-import org.docs.payload.request.UpdateEventRequest;
+import org.docs.payload.request.EventRequest;
 import org.docs.payload.response.EventResponse;
 import org.docs.payload.response.EventsResponse;
 import org.docs.payload.response.EventUserResponse;
@@ -96,10 +96,6 @@ public class EventController {
     @Secured("ROLE_ADMIN")
     @PostMapping("/events/event/users")
     public ResponseEntity<?> getUnsignedUsers(@RequestBody UnsignedUsersRequest request) {
-        Event event = eventRepo.findById(request.getEventId()).orElse(null);
-
-        if (event == null) return ResponseEntity.badRequest().build();
-
         return ResponseEntity.ok(
             userRepo.findAll().stream()
                 .filter(u -> !request.getParticipantIds().contains(u.getId()) && u.getRole().getERole() != ERole.ROLE_ADMIN)
@@ -110,7 +106,7 @@ public class EventController {
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/events/event/update")
-    public ResponseEntity<?> updateEvent(@Valid @RequestBody UpdateEventRequest request) {
+    public ResponseEntity<?> updateEvent(@Valid @RequestBody EventRequest request) {
         Event event = eventRepo.findById(request.getId()).orElse(null);
 
         if (event == null) return ResponseEntity.badRequest().build();
@@ -124,6 +120,29 @@ public class EventController {
         eventRepo.saveAndFlush(event);
 
         eventDayRepo.deleteByEvent(event);
+        eventDayRepo.saveAll(Arrays.asList(
+            new EventDay(event, dayRepo.findByKey("c-2"), request.getStartDate()),
+            new EventDay(event, dayRepo.findByKey("c-1"), incrementDay(request.getStartDate())),
+            new EventDay(event, dayRepo.findByKey("c1"), request.getC1Date()),
+            new EventDay(event, dayRepo.findByKey("c2"), incrementDay(request.getC1Date())),
+            new EventDay(event, dayRepo.findByKey("c+1"), request.getCplus1Date()),
+            new EventDay(event, dayRepo.findByKey("c+2"), request.getFinishDate())
+        ));
+
+        return ResponseEntity.ok(200);
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PutMapping("/events/event/create")
+    public ResponseEntity<?> createEvent(@Valid @RequestBody EventRequest request) {
+        Event event = new Event(
+            request.getName(),
+            userRepo.findAll().stream()
+                .filter(u -> request.getParticipantIds().contains(u.getId()))
+                .collect(Collectors.toSet())
+        );
+        eventRepo.saveAndFlush(event);
+
         eventDayRepo.saveAll(Arrays.asList(
             new EventDay(event, dayRepo.findByKey("c-2"), request.getStartDate()),
             new EventDay(event, dayRepo.findByKey("c-1"), incrementDay(request.getStartDate())),

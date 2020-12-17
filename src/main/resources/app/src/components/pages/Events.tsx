@@ -29,9 +29,16 @@ export default class Events extends Component<any, EventsState> {
 
     render() {
         return (
-            <div className="m-auto">
+            <div className="col-md-6 m-auto">
                 {!this.state.isLoaded ? <Preloader/> : <div/>}
-                <div className="h3 font-weight-bold mb-3">События</div>
+                <div className="d-flex justify-content-between mb-3">
+                    <div className="h3 font-weight-bold">
+                        События
+                    </div>
+                    <button className="btn btn-primary" onClick={() => this.props.history.push({pathname: "/eventForm"})}>
+                        Создать
+                    </button>
+                </div>
                 <table className="table table-hover bg-white">
                     <thead className="table-dark">
                     <tr>

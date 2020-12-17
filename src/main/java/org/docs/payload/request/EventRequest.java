@@ -1,27 +1,28 @@
 package org.docs.payload.request;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
-public class UpdateEventRequest {
+public class EventRequest {
     private Integer id;
     @NotBlank(message = "Заполните наименование")
     private String name;
-//    @NotBlank(message = "Заполните дату начала")
+    @NotNull(message = "Заполните дату начала")
     private Date startDate;
-//    @NotBlank(message = "Заполните дату С1")
+    @NotNull(message = "Заполните дату С1")
     private Date c1Date;
-//    @NotBlank(message = "Заполните дату С+1")
+    @NotNull(message = "Заполните дату С+1")
     private Date cplus1Date;
-//    @NotBlank(message = "Заполните дату окончания")
+    @NotNull(message = "Заполните дату окончания")
     private Date finishDate;
     private List<Integer> participantIds;
 
-    public UpdateEventRequest() {
+    public EventRequest() {
     }
 
-    public UpdateEventRequest(Integer id, @NotBlank(message = "Заполните наименование") String name, @NotBlank(message = "Заполните дату начала") Date startDate, @NotBlank(message = "Заполните дату С1") Date c1Date, @NotBlank(message = "Заполните дату С+1") Date cplus1Date, @NotBlank(message = "Заполните дату окончания") Date finishDate, List<Integer> participants) {
+    public EventRequest(Integer id, @NotBlank(message = "Заполните наименование") String name, @NotBlank(message = "Заполните дату начала") Date startDate, @NotBlank(message = "Заполните дату С1") Date c1Date, @NotBlank(message = "Заполните дату С+1") Date cplus1Date, @NotBlank(message = "Заполните дату окончания") Date finishDate, List<Integer> participants) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;

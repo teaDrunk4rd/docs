@@ -22,7 +22,7 @@ export class Router extends Component {
                         <Route exact path="/signup" component={SignUp}/>
                         <PrivateRoute exact path="/profile" component={Profile}/>
                         <PrivateRoute exact path="/" component={Events}/>
-                        <PrivateRoute exact path="/eventForm" component={EventForm}/>
+                        <PrivateRoute exact path="/eventForm" component={EventForm} roles="ROLE_ADMIN"/>
                         <PrivateRoute exact path="/event" component={Event}/>
                     </Switch>
                 </div>

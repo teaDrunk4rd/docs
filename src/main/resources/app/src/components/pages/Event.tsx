@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
-import Participants from "./EventForm/Participants";
+import Participants from "../Participants";
 
 interface EventFormState {
     id: number,
@@ -39,18 +39,18 @@ export default class Event extends Component<any, EventFormState> {
             if (response.status === 200)
                 this.setState({
                     name: response.data.name,
-                    startDate: this.getLocaleDate(response.data.startDate),
-                    cminus1Date: this.getLocaleDate(response.data.cminus1Date),
-                    c1Date: this.getLocaleDate(response.data.c1Date),
-                    c2Date: this.getLocaleDate(response.data.c2Date),
-                    cplus1Date: this.getLocaleDate(response.data.cplus1Date),
-                    finishDate: this.getLocaleDate(response.data.finishDate),
+                    startDate: Event.getLocaleDate(response.data.startDate),
+                    cminus1Date: Event.getLocaleDate(response.data.cminus1Date),
+                    c1Date: Event.getLocaleDate(response.data.c1Date),
+                    c2Date: Event.getLocaleDate(response.data.c2Date),
+                    cplus1Date: Event.getLocaleDate(response.data.cplus1Date),
+                    finishDate: Event.getLocaleDate(response.data.finishDate),
                     isLoaded: true
                 });
         });
     }
 
-    private getLocaleDate(date: any): String {
+    private static getLocaleDate(date: any): String {
         return date !== null ? new Date(date).toLocaleString('ru').substr(0, 10) : '';
     }
 

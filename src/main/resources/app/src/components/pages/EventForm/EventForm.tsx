@@ -5,7 +5,7 @@ import {store} from "react-notifications-component";
 import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import ruLocale from "date-fns/locale/ru";
-import Participants from "./Participants";
+import Participants from "../../Participants";
 
 interface EventFormState {
     id: number,
@@ -26,30 +26,31 @@ export default class EventForm extends Component<any, EventFormState> {
         super(props);
 
         this.state = {
-            id: props.location.state.id,
+            id: props.location.state?.id,
             name: '',
             startDate: undefined,
             c1Date: undefined,
             cplus1Date: undefined,
             finishDate: undefined,
-            isLoaded: false
+            isLoaded: props.location.state?.id === undefined
         };
         this.Participants = React.createRef();
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
-        axios.get(`events/event?id=${this.state.id}`).then(response => {
-            if (response.status === 200)
-                this.setState({
-                    name: response.data.name,
-                    startDate: response.data.startDate,
-                    c1Date: response.data.c1Date,
-                    cplus1Date: response.data.cplus1Date,
-                    finishDate: response.data.finishDate,
-                    isLoaded: true
-                });
-        });
+        if (this.state.id !== undefined)
+            axios.get(`events/event?id=${this.state.id}`).then(response => {
+                if (response.status === 200)
+                    this.setState({
+                        name: response.data.name,
+                        startDate: response.data.startDate,
+                        c1Date: response.data.c1Date,
+                        cplus1Date: response.data.cplus1Date,
+                        finishDate: response.data.finishDate,
+                        isLoaded: true
+                    });
+            });
     }
 
     handleSubmit(event: any) {
@@ -93,9 +94,7 @@ export default class EventForm extends Component<any, EventFormState> {
                         container: "top-right",
                         dismiss: { duration: 2000, onScreen: true }
                     });
-                    this.props.history.push({
-                        pathname: '/logs/log'
-                    })
+                    this.props.history.push({pathname: '/'})
                 }
             });
     }
@@ -129,7 +128,7 @@ export default class EventForm extends Component<any, EventFormState> {
                                 <div className="offset-md-2 col-md-3 mt-1">
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                                         <DatePicker
-                                            value={startDate}
+                                            value={startDate || null}
                                             inputVariant="outlined"
                                             onChange={(date: any) => this.setState({startDate: date})}
                                             format="dd.MM.yyyy"
@@ -140,7 +139,7 @@ export default class EventForm extends Component<any, EventFormState> {
                                 <div className="offset-md-1 col-md-3 mt-1">
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                                         <DatePicker
-                                            value={c1Date}
+                                            value={c1Date || null}
                                             inputVariant="outlined"
                                             onChange={(date: any) => this.setState({c1Date: date})}
                                             format="dd.MM.yyyy"
@@ -158,7 +157,7 @@ export default class EventForm extends Component<any, EventFormState> {
                                 <div className="offset-md-2 col-md-3 mt-1">
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                                         <DatePicker
-                                            value={cplus1Date}
+                                            value={cplus1Date || null}
                                             inputVariant="outlined"
                                             onChange={(date: any) => this.setState({cplus1Date: date})}
                                             format="dd.MM.yyyy"
@@ -169,7 +168,7 @@ export default class EventForm extends Component<any, EventFormState> {
                                 <div className="offset-md-1 col-md-3 mt-1">
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                                         <DatePicker
-                                            value={finishDate}
+                                            value={finishDate || null}
                                             inputVariant="outlined"
                                             onChange={(date: any) => this.setState({finishDate: date})}
                                             format="dd.MM.yyyy"
