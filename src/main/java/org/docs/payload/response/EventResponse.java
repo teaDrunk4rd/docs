@@ -1,9 +1,6 @@
 package org.docs.payload.response;
 
-import org.docs.payload.response.helper.Participant;
-
 import java.util.Date;
-import java.util.List;
 
 public class EventResponse {
     private String name;
@@ -11,18 +8,16 @@ public class EventResponse {
     private Date c1Date;
     private Date cplus1Date;
     private Date finishDate;
-    private List<Participant> participants;
 
     public EventResponse() {
     }
 
-    public EventResponse(String name, Date startDate, Date c1Date, Date cplus1Date, Date finishDate, List<Participant> participants) {
+    public EventResponse(String name, Date startDate, Date c1Date, Date cplus1Date, Date finishDate) {
         this.name = name;
         this.startDate = startDate;
         this.c1Date = c1Date;
         this.cplus1Date = cplus1Date;
         this.finishDate = finishDate;
-        this.participants = participants;
     }
 
     public String getName() {
@@ -63,13 +58,5 @@ public class EventResponse {
 
     public void setFinishDate(Date finishDate) {
         this.finishDate = finishDate;
-    }
-
-    public List<Participant> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(List<Participant> participants) {
-        this.participants = participants;
     }
 }

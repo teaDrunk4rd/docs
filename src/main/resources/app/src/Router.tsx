@@ -6,7 +6,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./components/pages/Profile";
 import SignUp from "./components/pages/SignUp";
 import Events from "./components/pages/Events";
-import EventForm from "./components/pages/EventForm";
+import EventForm from "./components/pages/EventForm/EventForm";
 
 
 export class Router extends Component {

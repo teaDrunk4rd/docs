@@ -46,13 +46,8 @@ public class User {
     @JoinColumn(name = "RoleId", nullable = false)
     private Role role;
 
-    @ManyToMany(cascade = { CascadeType.MERGE })
-    @JoinTable(
-            name = "user_events",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "event_id") }
-    )
-    Set<Event> events = new HashSet<>();
+    @ManyToMany(mappedBy = "users")
+    Set<Event> events;
 
     public User() {
     }
@@ -64,16 +59,6 @@ public class User {
         this.password = password;
         this.role = role;
     }
-
-    public User(String firstName, String lastName, String email, String password, Role role, Set<Event> events) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.events = events;
-    }
-
 
     public User(String firstName, String lastName, String email, String password, String PIN, Boolean isConfirmed,
                 Role role, File avatar, String country, String about) {

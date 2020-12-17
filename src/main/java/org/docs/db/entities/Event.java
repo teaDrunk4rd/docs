@@ -3,7 +3,6 @@ package org.docs.db.entities;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,7 +24,12 @@ public class Event {
     @ManyToMany(mappedBy = "events")
     private Set<Doc> docs;
 
-    @ManyToMany(mappedBy = "events")
+    @ManyToMany(cascade = { CascadeType.MERGE })
+    @JoinTable(
+        name = "event_users",
+        joinColumns = { @JoinColumn(name = "event_id") },
+        inverseJoinColumns = { @JoinColumn(name = "user_id") }
+    )
     private Set<User> users;
 
     @OneToMany(mappedBy="event")
@@ -38,9 +42,9 @@ public class Event {
         this.name = name;
     }
 
-    public Event(String name, File avatar) {
+    public Event(String name, Set<User> users) {
         this.name = name;
-        this.avatar = avatar;
+        this.users = users;
     }
 
     public String getDates() {

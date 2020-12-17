@@ -1,8 +1,6 @@
 package org.docs.payload.request;
 
-import org.docs.db.entities.User;
 import org.docs.db.repos.UserRepo;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

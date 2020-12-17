@@ -1,15 +1,25 @@
-package org.docs.payload.response.helper;
+package org.docs.payload.response;
 
-public class Participant {
+public class EventUserResponse {
+    private Integer id;
     private String user;
     private String role;
 
-    public Participant() {
+    public EventUserResponse() {
     }
 
-    public Participant(String user, String role) {
+    public EventUserResponse(Integer id, String user, String role) {
+        this.id = id;
         this.user = user;
         this.role = role;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUser() {

@@ -26,13 +26,11 @@ public class UsersSeeder implements Seeder {
     @Override
     public void run() {
         if (userRepo.count() == 0) {
-            Set<Event> events = new HashSet<>();
-            eventRepo.findAll().iterator().forEachRemaining(events::add);
             userRepo.saveAll(Arrays.asList(
                 new User("admin", "admin", "admin@m.ru", encoder.encode("123"), roleRepo.findByKey("admin")),
-                new User("expert", "1", "expert1@m.ru", encoder.encode("123"), roleRepo.findByKey("expert"), events),
+                new User("expert", "1", "expert1@m.ru", encoder.encode("123"), roleRepo.findByKey("expert")),
                 new User("expert", "2", "expert2@m.ru", encoder.encode("123"), roleRepo.findByKey("expert")),
-                new User("listener", "1", "listener1@m.ru", encoder.encode("123"), roleRepo.findByKey("listener"), events),
+                new User("listener", "1", "listener1@m.ru", encoder.encode("123"), roleRepo.findByKey("listener")),
                 new User("listener", "2", "listener2@m.ru", encoder.encode("123"), roleRepo.findByKey("listener"))
             ));
         }
