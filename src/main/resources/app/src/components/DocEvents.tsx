@@ -7,72 +7,75 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {Modal} from "@material-ui/core";
-import UnsignedUsers from "./UnsignedUsers";
+import DocFreeEvents from "./DocFreeEvents";
 
-interface ParticipantsProps {
-    eventId: number,
+interface DocEventsProps {
+    docId: number,
     readonly?: boolean
 }
 
-interface ParticipantsState {
-    participants: Array<any>,
-    selectedParticipant: any,
+interface DocEventsState {
+    events: Array<any>,
+    selectedEvent: any,
     openDeleteDialog: boolean,
     openAddModal: boolean
 }
 
 
-export default class Participants extends Component<ParticipantsProps, ParticipantsState> {
-    private readonly UnsignedUsers: React.RefObject<UnsignedUsers>;
-    constructor(props: ParticipantsProps) {
+export default class DocEvents extends Component<DocEventsProps, DocEventsState> {
+    private readonly DocFreeEvents: React.RefObject<DocFreeEvents>;
+
+    constructor(props: DocEventsProps) {
         super(props);
 
         this.state = {
-            participants: [],
-            selectedParticipant: null,
+            events: [],
+            selectedEvent: null,
             openDeleteDialog: false,
             openAddModal: false
         }
-        this.UnsignedUsers = React.createRef();
-        this.assignUsers = this.assignUsers.bind(this);
+        this.DocFreeEvents = React.createRef();
+        this.assignEvents = this.assignEvents.bind(this);
     }
 
     componentDidMount() {
-        if (this.props.eventId !== undefined)
-            axios.get(`events/event/participants?id=${this.props.eventId}`).then(response => {
+        if (this.props.docId !== undefined)
+            axios.get(`docs/doc/events?id=${this.props.docId}`).then(response => {
                 if (response.status === 200)
                     this.setState({
-                        participants: response.data
+                        events: response.data
                     });
             });
     }
 
-    assignUsers(event: any) {
-        this.UnsignedUsers.current?.state.markedUsers.forEach(user => this.state.participants.push(user));
+    assignEvents(event: any) {
+        this.DocFreeEvents.current?.state.markedEvents.forEach(event => this.state.events.push(event));
         this.setState({openAddModal: false})
     }
 
     render() {
-        const {participants, selectedParticipant} = this.state;
+        const {events, selectedEvent} = this.state;
         return (
-            <div className="offset-md-2 col-md-7 d-flex">
+            <div className="offset-md-2 col-md-8 d-flex">
                 <table className="table table-hover mt-2">
                     <thead className="table-dark">
                     <tr>
-                        <th>Пользователь</th>
-                        <th>Роль</th>
+                        <th>Событие</th>
+                        <th>Даты</th>
+                        <th>Участники</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {participants && participants.map((participant, index) => {
+                    {events && events.map((event, index) => {
                         return (
                             <tr className={
-                                !this.props.readonly && participant === selectedParticipant ? 'cursor-pointer table-primary' :
-                                !this.props.readonly ? 'cursor-pointer' : ''}
-                                onClick={() => this.setState({selectedParticipant: participant})}
+                                !this.props.readonly && event === selectedEvent ? 'cursor-pointer table-primary' :
+                                    !this.props.readonly ? 'cursor-pointer' : ''}
+                                onClick={() => this.setState({selectedEvent: event})}
                                 key={index}>
-                                <td>{participant.user}</td>
-                                <td>{participant.role}</td>
+                                <td>{event.event}</td>
+                                <td>{event.dates}</td>
+                                <td>{event.participantsCount}</td>
                             </tr>
                         )
                     })}
@@ -83,7 +86,7 @@ export default class Participants extends Component<ParticipantsProps, Participa
                     !this.props.readonly ? (
                         <div className='ml-4 mt-2'>
                             <div className="add-icon shadow mb-3" onClick={() => this.setState({openAddModal: true})} />
-                            <div className={`remove-icon shadow ${selectedParticipant == null ? 'disable' : ''}`}
+                            <div className={`remove-icon shadow ${selectedEvent == null ? 'disable' : ''}`}
                                  onClick={() => this.setState({openDeleteDialog: true})} />
                         </div>
                     ) : <div/>
@@ -105,7 +108,7 @@ export default class Participants extends Component<ParticipantsProps, Participa
                             Отмена
                         </Button>
                         <Button onClick={() => {
-                            participants.splice(participants.indexOf(selectedParticipant), 1);
+                            events.splice(events.indexOf(selectedEvent), 1);
                             this.forceUpdate();
                             this.setState({openDeleteDialog: false});
                         }} color="secondary">
@@ -122,11 +125,11 @@ export default class Participants extends Component<ParticipantsProps, Participa
                     className="d-flex justify-content-center align-items-center">
                     <div className="col-md-6 bg-white my-5">
                         <div className="mt-2">
-                            <i>Отметьте пользователей, которых Вы хотите записать</i>
+                            <i>Отметьте события, которые Вы хотите прикрепить к документу</i>
                         </div>
-                        <UnsignedUsers ref={this.UnsignedUsers} participants={participants} />
+                        <DocFreeEvents ref={this.DocFreeEvents} docEvents={events} />
                         <div className="d-flex justify-content-end mb-3">
-                            <button className="btn btn-primary" onClick={this.assignUsers}>
+                            <button className="btn btn-primary" onClick={this.assignEvents}>
                                 Записать
                             </button>
                         </div>

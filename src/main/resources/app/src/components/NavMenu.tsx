@@ -28,12 +28,19 @@ export default class NavMenu extends Component<any, NavMenuProps> {
                             <ul className="navbar-nav flex-grow w-100 d-flex justify-content-between">
                                 <div className="d-flex justify-content-around align-items-center">
                                     <NavItem>
-                                        <NavLink tag={Link} className="text-dark" to="/">События</NavLink>
+                                        <NavLink tag={Link} className="text-dark h5 font-weight-normal m-0" to="/">
+                                            События
+                                        </NavLink>
                                     </NavItem>
                                     { checkRole("ROLE_ADMIN") &&
                                     <NavItem>
                                         <NavLink tag={Link} className="text-dark" to="/users">Пользователи</NavLink>
                                     </NavItem> }
+                                    <NavItem>
+                                        <NavLink tag={Link} className="text-dark" to="/docs">
+                                            Документы
+                                        </NavLink>
+                                    </NavItem>
                                 </div>
                                 <NavItem>
                                     {localStorage["user"] ? (

@@ -1,6 +1,6 @@
 package org.docs.controllers;
 
-import org.docs.db.repos.RoleRepo;
+import org.docs.db.repos.DayRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/")
-public class RoleController {
+public class DayController {
     @Autowired
-    private RoleRepo roleRepo;
+    private DayRepo dayRepo;
 
     @Secured("ROLE_ADMIN")
-    @GetMapping("/roles")
+    @GetMapping("/days")
     public ResponseEntity<?> index() {
-        return ResponseEntity.ok(roleRepo.findAll());
+        return ResponseEntity.ok(dayRepo.findAll());
     }
 }

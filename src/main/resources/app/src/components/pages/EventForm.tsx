@@ -73,9 +73,7 @@ export default class EventForm extends Component<any, EventFormState> {
                         container: "top-right",
                         dismiss: { duration: 2000, onScreen: true }
                     });
-                    this.props.history.push({
-                        pathname: '/'
-                    })
+                    this.props.history.push({pathname: '/'})
                 }
             });
         else
@@ -179,6 +177,7 @@ export default class EventForm extends Component<any, EventFormState> {
                             </div>
 
                             <div className="row mb-2">
+                                <div className="offset-md-2 col-md-10 text-left">Участники события</div>
                                 <Participants ref={this.Participants} eventId={id}/>
                             </div>
 

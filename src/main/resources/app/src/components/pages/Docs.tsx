@@ -2,25 +2,25 @@ import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
 
-interface EventsState {
-    events: Array<any>,
+interface DocsState {
+    docs: Array<any>,
     isLoaded: boolean
 }
 
-export default class Events extends Component<any, EventsState> {
+export default class Docs extends Component<any, DocsState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            events: [],
+            docs: [],
             isLoaded: false
         };
     }
 
     componentDidMount() {
-        axios.get('events').then(response => {
+        axios.get('docs').then(response => {
             if (response.status === 200) {
                 this.setState({
-                    events: response.data,
+                    docs: response.data,
                     isLoaded: true
                 })
             }
@@ -33,11 +33,12 @@ export default class Events extends Component<any, EventsState> {
                 {!this.state.isLoaded ? <Preloader/> : <div/>}
                 <div className="d-flex justify-content-between mb-3">
                     <div className="h3 font-weight-bold">
-                        События
+                        Документы
                     </div>
                     {
                         JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" ? (
-                            <button className="btn btn-primary" onClick={() => this.props.history.push({pathname: "/eventForm"})}>
+                            <button className="btn btn-primary"
+                                    onClick={() => this.props.history.push({pathname: "docs/docForm"})}>
                                 Создать
                             </button>
                         ) : <div/>
@@ -47,24 +48,25 @@ export default class Events extends Component<any, EventsState> {
                 <table className="table table-hover bg-white">
                     <thead className="table-dark">
                     <tr>
-                        <th>Событие</th>
-                        <th>Даты</th>
-                        <th>Участники</th>
+                        <th>Наименование</th>
+                        <th>День</th>
+                        <th>Роль</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.events.length !== 0 && this.state.events.map((event, index) => {
+                    {this.state.docs.length !== 0 && this.state.docs.map((doc, index) => {
                         return (
                             <tr className="cursor-pointer"
                                 key={index}
                                 onClick={() => this.props.history.push({
-                                    pathname: JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" ? "/eventForm" : "/event",
-                                    search: `?id=${event.id}`,
-                                    state: { id: event.id }
+                                    pathname: JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" ?
+                                        "docs/docForm" : "docs/doc",
+                                    search: `?id=${doc.id}`,
+                                    state: { id: doc.id }
                                 })}>
-                                <td>{event.event}</td>
-                                <td>{event.dates}</td>
-                                <td>{event.participantsCount}</td>
+                                <td>{doc.doc}</td>
+                                <td>{doc.day}</td>
+                                <td>{doc.role}</td>
                             </tr>
                         )
                     })}

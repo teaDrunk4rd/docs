@@ -25,8 +25,8 @@ public class Event {
     @ManyToMany(cascade = { CascadeType.MERGE })
     @JoinTable(
         name = "event_users",
-        joinColumns = { @JoinColumn(name = "event_id") },
-        inverseJoinColumns = { @JoinColumn(name = "user_id") }
+        joinColumns = { @JoinColumn(name = "event_id", nullable = false) },
+        inverseJoinColumns = { @JoinColumn(name = "user_id", nullable = false) }
     )
     private Set<User> users;
 

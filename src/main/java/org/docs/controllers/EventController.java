@@ -89,7 +89,6 @@ public class EventController {
         return ResponseEntity.ok(
             event.getUsers().stream()
                 .map(u -> new EventUserResponse(u.getId(), u.getFullName(), u.getRole().getName()))
-                .collect(Collectors.toList())
         );
     }
 
@@ -100,7 +99,6 @@ public class EventController {
             userRepo.findAll().stream()
                 .filter(u -> !request.getParticipantIds().contains(u.getId()) && u.getRole().getERole() != ERole.ROLE_ADMIN)
                 .map(u -> new EventUserResponse(u.getId(), u.getFullName(), u.getRole().getName()))
-                .collect(Collectors.toList())
         );
     }
 

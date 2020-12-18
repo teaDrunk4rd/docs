@@ -10,6 +10,8 @@ import EventForm from "./components/pages/EventForm";
 import Event from "./components/pages/Event";
 import Users from "./components/pages/Users";
 import UserForm from "./components/pages/UserForm";
+import Docs from "./components/pages/Docs";
+import DocForm from "./components/pages/DocForm";
 
 
 export class Router extends Component {
@@ -30,6 +32,9 @@ export class Router extends Component {
 
                         <PrivateRoute exact path="/users" component={Users} roles="ROLE_ADMIN"/>
                         <PrivateRoute exact path="/users/user" component={UserForm} roles="ROLE_ADMIN"/>
+
+                        <PrivateRoute exact path="/docs" component={Docs}/>
+                        <PrivateRoute exact path="/docs/docForm" component={DocForm} roles="ROLE_ADMIN"/>
                     </Switch>
                 </div>
             </div>

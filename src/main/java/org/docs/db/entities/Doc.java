@@ -66,6 +66,14 @@ public class Doc {
         this.isSigned = isSigned;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Set<Event> getEvents() {
         return events;
     }
