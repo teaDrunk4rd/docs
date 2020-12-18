@@ -58,3 +58,7 @@ a {
 .MuiOutlinedInput-input {
     padding: 7px 14px !important;
 }
+
+.padding-bottom-1px {
+    padding-bottom: 1px;
+}

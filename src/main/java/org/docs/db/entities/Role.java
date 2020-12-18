@@ -1,5 +1,6 @@
 package org.docs.db.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.docs.db.ERole;
 
 import javax.persistence.*;
@@ -19,11 +20,13 @@ public class Role {
     @Column(unique = true, nullable = false)
     private String key;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "role")
-    Set<User> users;
+    private Set<User> users;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "role")
-    Set<Doc> docs;
+    private Set<Doc> docs;
 
     private static HashMap<String, ERole> ERoles = new HashMap<String, ERole>() {{
         put("admin", ERole.ROLE_ADMIN);
@@ -37,6 +40,14 @@ public class Role {
     public Role(String name, String key) {
         this.name = name;
         this.key = key;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -6,8 +6,10 @@ import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./components/pages/Profile";
 import SignUp from "./components/pages/SignUp";
 import Events from "./components/pages/Events";
-import EventForm from "./components/pages/EventForm/EventForm";
+import EventForm from "./components/pages/EventForm";
 import Event from "./components/pages/Event";
+import Users from "./components/pages/Users";
+import UserForm from "./components/pages/UserForm";
 
 
 export class Router extends Component {
@@ -21,9 +23,13 @@ export class Router extends Component {
                         <Route exact path="/login" component={Login}/>
                         <Route exact path="/signup" component={SignUp}/>
                         <PrivateRoute exact path="/profile" component={Profile}/>
+
                         <PrivateRoute exact path="/" component={Events}/>
                         <PrivateRoute exact path="/eventForm" component={EventForm} roles="ROLE_ADMIN"/>
                         <PrivateRoute exact path="/event" component={Event}/>
+
+                        <PrivateRoute exact path="/users" component={Users} roles="ROLE_ADMIN"/>
+                        <PrivateRoute exact path="/users/user" component={UserForm} roles="ROLE_ADMIN"/>
                     </Switch>
                 </div>
             </div>

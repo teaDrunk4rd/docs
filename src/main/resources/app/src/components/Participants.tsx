@@ -7,7 +7,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {Modal} from "@material-ui/core";
-import UnsignedUsers from "./pages/EventForm/UnsignedUsers";
+import UnsignedUsers from "./UnsignedUsers";
 
 interface ParticipantsProps {
     eventId: number,

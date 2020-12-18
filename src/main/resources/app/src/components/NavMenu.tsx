@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import {Collapse, Container, Navbar, NavbarToggler, NavItem, NavLink} from 'reactstrap';
 import {Link} from 'react-router-dom';
 
+function checkRole(roles: string): boolean {
+    return localStorage["user"] && roles.split(',').includes(JSON.parse(localStorage["user"])["role"]);
+}
+
 interface NavMenuProps {
     collapsed?: boolean
 }
@@ -22,9 +26,15 @@ export default class NavMenu extends Component<any, NavMenuProps> {
                         <NavbarToggler onClick={() => this.setState({collapsed: !this.state.collapsed})} className="mr-2"/>
                         <Collapse className="d-sm-inline-flex" isOpen={!this.state.collapsed} navbar>
                             <ul className="navbar-nav flex-grow w-100 d-flex justify-content-between">
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/">События</NavLink>
-                                </NavItem>
+                                <div className="d-flex justify-content-around align-items-center">
+                                    <NavItem>
+                                        <NavLink tag={Link} className="text-dark" to="/">События</NavLink>
+                                    </NavItem>
+                                    { checkRole("ROLE_ADMIN") &&
+                                    <NavItem>
+                                        <NavLink tag={Link} className="text-dark" to="/users">Пользователи</NavLink>
+                                    </NavItem> }
+                                </div>
                                 <NavItem>
                                     {localStorage["user"] ? (
                                         <NavLink tag={Link} className="text-dark" to="/profile">

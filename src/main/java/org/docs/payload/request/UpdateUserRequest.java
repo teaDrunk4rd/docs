@@ -1,13 +1,15 @@
 package org.docs.payload.request;
 
 import org.docs.db.entities.User;
+import org.docs.db.repos.RoleRepo;
 import org.docs.db.repos.UserRepo;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class UpdateUserRequest {
+    private Integer id;
     @NotBlank(message = "Заполните email")
     @Email(message = "Неверно введён email")
     private String email;
@@ -15,18 +17,35 @@ public class UpdateUserRequest {
     private String firstName;
     @NotBlank(message = "Заполните фамилию")
     private String lastName;
-
+    @NotNull(message = "Заполните роль")
+    private Integer roleId;
     private String country;
-
     private String about;
+    private String pin;
+    private boolean isConfirmed;
 
-    private Boolean changePasswordFlag;
+    public UpdateUserRequest() {
+    }
 
-    private String oldPassword;
+    public UpdateUserRequest(Integer id, @NotBlank(message = "Заполните email") @Email(message = "Неверно введён email") String email, @NotBlank(message = "Заполните имя") String firstName, @NotBlank(message = "Заполните фамилию") String lastName, @NotNull(message = "Заполните роль") Integer roleId, String country, String about, String PIN, boolean isConfirmed) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.roleId = roleId;
+        this.country = country;
+        this.about = about;
+        this.pin = PIN;
+        this.isConfirmed = isConfirmed;
+    }
 
-    private String password;
+    public Integer getId() {
+        return id;
+    }
 
-    private String passwordConfirmation;
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -40,12 +59,24 @@ public class UpdateUserRequest {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getLastName() {
         return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public String getCountry() {
@@ -64,57 +95,27 @@ public class UpdateUserRequest {
         this.about = about;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getPin() {
+        return pin;
     }
 
-    public Boolean getChangePasswordFlag() {
-        return changePasswordFlag;
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 
-    public void setChangePasswordFlag(Boolean changePasswordFlag) {
-        this.changePasswordFlag = changePasswordFlag;
+    public boolean getConfirmed() {
+        return isConfirmed;
     }
 
-    public String getOldPassword() {
-        return oldPassword;
+    public void setConfirmed(boolean confirmed) {
+        isConfirmed = confirmed;
     }
 
-    public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPasswordConfirmation() {
-        return passwordConfirmation;
-    }
-
-    public void setPasswordConfirmation(String passwordConfirmation) {
-        this.passwordConfirmation = passwordConfirmation;
-    }
-
-    public String validate(UserRepo userRepo, User user, PasswordEncoder encoder) {
-        if (userRepo.findByEmail(this.getEmail()) != null && !user.getEmail().equals(this.getEmail())) {
+    public String validate(UserRepo userRepo, RoleRepo roleRepo, User user) {
+        if (userRepo.findByEmail(this.getEmail()) != null && !user.getEmail().equals(this.getEmail()))
             return "Пользователь с таким email уже существует";
-        } else if (this.getChangePasswordFlag()) {
-            if (this.getPassword().equals("") || this.getPassword() == null)
-                return "Заполните новый пароль";
-            else if (this.getPasswordConfirmation().equals("") || this.getPasswordConfirmation() == null)
-                return "Заполните подтверждение пароля";
-            else if (this.getOldPassword().equals("") || this.getOldPassword() == null)
-                return "Заполните старый пароль";
-            else if (!this.getPassword().equals(this.getPasswordConfirmation()))
-                return "Новый пароль и подтверждение пароля должны совпадать";
-            else if (!encoder.matches(this.getOldPassword(), user.getPassword()))
-                return "Неверный старый пароль";
-        }
+        else if (roleRepo.findById(this.getRoleId()).orElse(null) == null)
+            return "Данной роли не существует";
 
         return null;
     }

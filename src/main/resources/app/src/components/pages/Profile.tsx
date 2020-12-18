@@ -124,7 +124,7 @@ export default class Profile extends Component<any, ProfileState> {
                                            autoComplete="false"
                                            value={email}
                                            onChange={event => this.setState({email: event.target.value})}
-                                           className="form-control "/>
+                                           className="form-control"/>
                                 </div>
                             </div>
 
@@ -150,7 +150,7 @@ export default class Profile extends Component<any, ProfileState> {
                                            autoComplete="false"
                                            value={firstName}
                                            onChange={event => this.setState({firstName: event.target.value})}
-                                           className="form-control "/>
+                                           className="form-control"/>
                                 </div>
                             </div>
 
@@ -163,7 +163,7 @@ export default class Profile extends Component<any, ProfileState> {
                                            autoComplete="false"
                                            value={country}
                                            onChange={event => this.setState({country: event.target.value})}
-                                           className="form-control "/>
+                                           className="form-control"/>
                                 </div>
                             </div>
 
@@ -175,7 +175,7 @@ export default class Profile extends Component<any, ProfileState> {
                                     <textarea
                                         value={about || ''}
                                         onChange={event => this.setState({about: event.target.value})}
-                                        className="form-control "/>
+                                        className="form-control"/>
                                 </div>
                             </div>
 
@@ -190,7 +190,7 @@ export default class Profile extends Component<any, ProfileState> {
                                                        autoComplete="new-password"
                                                        value={oldPassword}
                                                        onChange={event => this.setState({oldPassword: event.target.value})}
-                                                       className="form-control "/>
+                                                       className="form-control"/>
                                             </div>
                                         </div>
 
@@ -202,7 +202,7 @@ export default class Profile extends Component<any, ProfileState> {
                                                        autoComplete="new-password"
                                                        value={newPassword}
                                                        onChange={event => this.setState({newPassword: event.target.value})}
-                                                       className="form-control "/>
+                                                       className="form-control"/>
                                             </div>
                                         </div>
 
@@ -214,7 +214,7 @@ export default class Profile extends Component<any, ProfileState> {
                                                        autoComplete="new-password"
                                                        value={passwordConfirmation}
                                                        onChange={event => this.setState({passwordConfirmation: event.target.value})}
-                                                       className="form-control "/>
+                                                       className="form-control"/>
                                             </div>
                                         </div>
                                     </div>
@@ -223,7 +223,7 @@ export default class Profile extends Component<any, ProfileState> {
                                     <div className="form-group row">
                                         <div className="col-md-6 offset-md-4">
                                             <a href='#'
-                                               onClick={event => this.setState({changePasswordFlag: !changePasswordFlag})}>
+                                               onClick={() => this.setState({changePasswordFlag: !changePasswordFlag})}>
                                                 Сменить пароль
                                             </a>
                                         </div>

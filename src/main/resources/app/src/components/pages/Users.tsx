@@ -2,25 +2,25 @@ import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
 
-interface EventsState {
-    events: Array<any>,
+interface UsersState {
+    users: Array<any>,
     isLoaded: boolean
 }
 
-export default class Events extends Component<any, EventsState> {
+export default class Users extends Component<any, UsersState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            events: [],
+            users: [],
             isLoaded: false
         };
     }
 
     componentDidMount() {
-        axios.get('events').then(response => {
+        axios.get('users').then(response => {
             if (response.status === 200) {
                 this.setState({
-                    events: response.data,
+                    users: response.data,
                     isLoaded: true
                 })
             }
@@ -31,35 +31,36 @@ export default class Events extends Component<any, EventsState> {
         return (
             <div className="col-md-6 m-auto">
                 {!this.state.isLoaded ? <Preloader/> : <div/>}
-                <div className="d-flex justify-content-between mb-3">
+                <div className="d-flex justify-content-start mb-3">
                     <div className="h3 font-weight-bold">
-                        События
+                        Пользователи
                     </div>
-                    <button className="btn btn-primary" onClick={() => this.props.history.push({pathname: "/eventForm"})}>
-                        Создать
-                    </button>
                 </div>
                 <table className="table table-hover bg-white">
                     <thead className="table-dark">
                     <tr>
-                        <th>Событие</th>
-                        <th>Даты</th>
-                        <th>Участники</th>
+                        <th>Email</th>
+                        <th>Имя</th>
+                        <th>Роль</th>
+                        <th>Страна</th>
+                        <th>Подтверждён</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.events.length !== 0 && this.state.events.map((event, index) => {
+                    {this.state.users.length !== 0 && this.state.users.map((user, index) => {
                         return (
                             <tr className="cursor-pointer"
                                 key={index}
                                 onClick={() => this.props.history.push({
-                                    pathname: JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" ? "/eventForm" : "/event",
-                                    search: `?id=${event.id}`,
-                                    state: { id: event.id }
+                                    pathname: "/users/user",
+                                    search: `?id=${user.id}`,
+                                    state: { id: user.id }
                                 })}>
-                                <td>{event.event}</td>
-                                <td>{event.dates}</td>
-                                <td>{event.participantsCount}</td>
+                                <td>{user.email}</td>
+                                <td>{user.fullName}</td>
+                                <td>{user.role}</td>
+                                <td>{user.country}</td>
+                                <td>{user.confirmed ? '✓' : '✘'}</td>
                             </tr>
                         )
                     })}

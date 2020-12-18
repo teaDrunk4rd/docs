@@ -1,11 +1,11 @@
 import React, {Component} from "react";
 import axios from "axios";
-import Preloader from "../../Preloader";
+import Preloader from "../Preloader";
 import {store} from "react-notifications-component";
 import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import ruLocale from "date-fns/locale/ru";
-import Participants from "../../Participants";
+import Participants from "../Participants";
 
 interface EventFormState {
     id: number,
