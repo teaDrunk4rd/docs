@@ -28,9 +28,9 @@ public class DatabaseSeeder {
         daysSeeder.run();
         rolesSeeder.run();
 
-        docsSeeder.run();
         usersSeeder.run();
         eventsSeeder.run();
+        docsSeeder.run();
         eventDaysSeeder.run();
     }
 }

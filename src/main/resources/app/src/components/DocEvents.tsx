@@ -130,7 +130,7 @@ export default class DocEvents extends Component<DocEventsProps, DocEventsState>
                         <DocFreeEvents ref={this.DocFreeEvents} docEvents={events} />
                         <div className="d-flex justify-content-end mb-3">
                             <button className="btn btn-primary" onClick={this.assignEvents}>
-                                Записать
+                                Прикрепить
                             </button>
                         </div>
                     </div>

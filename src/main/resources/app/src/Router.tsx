@@ -12,6 +12,7 @@ import Users from "./components/pages/Users";
 import UserForm from "./components/pages/UserForm";
 import Docs from "./components/pages/Docs";
 import DocForm from "./components/pages/DocForm";
+import Doc from "./components/pages/Doc";
 
 
 export class Router extends Component {
@@ -35,6 +36,7 @@ export class Router extends Component {
 
                         <PrivateRoute exact path="/docs" component={Docs}/>
                         <PrivateRoute exact path="/docs/docForm" component={DocForm} roles="ROLE_ADMIN"/>
+                        <PrivateRoute exact path="/docs/doc" component={Doc}/>
                     </Switch>
                 </div>
             </div>

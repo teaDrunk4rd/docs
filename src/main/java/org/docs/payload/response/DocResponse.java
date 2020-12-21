@@ -1,19 +1,22 @@
 package org.docs.payload.response;
 
+import org.docs.db.entities.Day;
+import org.docs.db.entities.Role;
+
 public class DocResponse {
     private String name;
-    private Integer dayId;
+    private Day day;
     private String content;
-    private Integer roleId;
+    private Role role;
 
     public DocResponse() {
     }
 
-    public DocResponse(String name, Integer dayId, String content, Integer roleId) {
+    public DocResponse(String name, Day day, String content, Role role) {
         this.name = name;
-        this.dayId = dayId;
+        this.day = day;
         this.content = content;
-        this.roleId = roleId;
+        this.role = role;
     }
 
     public String getName() {
@@ -24,12 +27,12 @@ public class DocResponse {
         this.name = name;
     }
 
-    public Integer getDayId() {
-        return dayId;
+    public Day getDay() {
+        return day;
     }
 
-    public void setDayId(Integer dayId) {
-        this.dayId = dayId;
+    public void setDay(Day day) {
+        this.day = day;
     }
 
     public String getContent() {
@@ -40,11 +43,11 @@ public class DocResponse {
         this.content = content;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

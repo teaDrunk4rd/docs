@@ -41,12 +41,15 @@ public class DocController {
         return ResponseEntity.ok(
             docRepo.findAll().stream()
                 .filter(d -> user.getRole().getERole() == ERole.ROLE_ADMIN ||
-                        d.getEvents().stream().anyMatch(e -> e.getUsers().stream().anyMatch(u -> u.getId().equals(user.getId()))))
-                .sorted(Comparator.comparing(
-                        d -> d.getEvents().stream()
-                                .map(Event::getName)
-                                .collect(Collectors.joining(",")))
-                )
+                        d.getEvents().stream()
+                                .anyMatch(e -> e.getUsers().stream()
+                                        .anyMatch(u -> u.getId().equals(user.getId()) && d.getRole() == u.getRole())))
+//                .sorted(Comparator.comparing(
+//                        d -> d.getEvents().stream()
+//                                .map(Event::getName)
+//                                .collect(Collectors.joining(",")))
+//                )
+                .sorted(Comparator.comparing(Doc::getName))
                 .map(d -> new DocsResponse(d.getId(), d.getName(), d.getDay().getName(), d.getRole().getName()))
         );
     }
@@ -59,15 +62,16 @@ public class DocController {
         if (doc == null) return ResponseEntity.badRequest().build();
 
         if (user == null || user.getRole().getERole() != ERole.ROLE_ADMIN &&
-                doc.getEvents().stream().anyMatch(e -> e.getUsers().stream().anyMatch(u -> u.getId().equals(user.getId()))))
+                doc.getEvents().stream().noneMatch(e -> e.getUsers().stream()
+                        .anyMatch(u -> u.getId().equals(user.getId()) && doc.getRole() == u.getRole())))
             return ResponseEntity.status(403).build();
 
         return ResponseEntity.ok(
             new DocResponse(
                 doc.getName(),
-                doc.getDay().getId(),
+                doc.getDay(),
                 doc.getContent(),
-                doc.getRole().getId()
+                doc.getRole()
             )
         );
     }
@@ -80,7 +84,8 @@ public class DocController {
         if (doc == null) return ResponseEntity.badRequest().build();
 
         if (user == null || user.getRole().getERole() != ERole.ROLE_ADMIN &&
-                doc.getEvents().stream().anyMatch(e -> e.getUsers().stream().anyMatch(u -> u.getId().equals(user.getId()))))
+                doc.getEvents().stream().noneMatch(e -> e.getUsers().stream()
+                        .anyMatch(u -> u.getId().equals(user.getId()) && doc.getRole() == u.getRole())))
             return ResponseEntity.status(403).build();
 
         return ResponseEntity.ok(

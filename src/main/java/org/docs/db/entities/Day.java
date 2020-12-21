@@ -1,5 +1,7 @@
 package org.docs.db.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,9 +19,11 @@ public class Day {
     @Column(unique = true, nullable = false)
     private String key;
 
+    @JsonIgnore
     @OneToMany(mappedBy="day")
     Set<EventDay> eventDays = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy="day")
     Set<Doc> docs = new HashSet<>();
 

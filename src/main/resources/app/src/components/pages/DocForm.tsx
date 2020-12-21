@@ -2,9 +2,6 @@ import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
 import {store} from "react-notifications-component";
-import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import ruLocale from "date-fns/locale/ru";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -47,9 +44,9 @@ export default class DocForm extends Component<any, DocFormState> {
                 if (response.status === 200)
                     this.setState({
                         name: response.data.name,
-                        dayId: response.data.dayId,
+                        dayId: response.data.day.id,
                         content: response.data.content,
-                        roleId: response.data.roleId,
+                        roleId: response.data.role.id,
                     });
             });
 

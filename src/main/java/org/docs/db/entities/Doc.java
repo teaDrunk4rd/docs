@@ -37,7 +37,7 @@ public class Doc {
         joinColumns = { @JoinColumn(name = "docId", nullable = false) },
         inverseJoinColumns = { @JoinColumn(name = "eventId", nullable = false) }
     )
-    Set<Event> events = new HashSet<>();
+    private Set<Event> events = new HashSet<>();
 
     public Doc() {
     }
