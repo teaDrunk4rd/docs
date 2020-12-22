@@ -18,7 +18,7 @@ public class Event {
     @ManyToMany(mappedBy = "events")
     private Set<Doc> docs;
 
-    @ManyToMany(cascade = { CascadeType.MERGE })
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
         name = "event_users",
         joinColumns = { @JoinColumn(name = "event_id", nullable = false) },
@@ -26,7 +26,7 @@ public class Event {
     )
     private Set<User> users;
 
-    @OneToMany(mappedBy="event")
+    @OneToMany(mappedBy="event", cascade = {CascadeType.REMOVE})
     private Set<EventDay> eventDays;
 
     public Event() {

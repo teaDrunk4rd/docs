@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
+import {store} from "react-notifications-component";
 
 interface UsersState {
     users: Array<any>,
@@ -27,9 +28,27 @@ export default class Users extends Component<any, UsersState> {
         });
     }
 
+    delete(id: number) {
+        axios.delete(`users/user/delete?id=${id}`).then(response => {
+            if (response.status === 200) {
+                store.addNotification({
+                    message: "Пользователь удален",
+                    type: "warning",
+                    container: "top-right",
+                    dismiss: { duration: 2000, onScreen: true }
+                });
+
+                this.state.users.splice(this.state.users.indexOf(this.state.users.find(function (u) {
+                    return u.id === id;
+                })), 1);
+                this.forceUpdate();
+            }
+        })
+    }
+
     render() {
         return (
-            <div className="col-md-6 m-auto">
+            <div className="col-md-7 m-auto">
                 {!this.state.isLoaded ? <Preloader/> : <div/>}
                 <div className="d-flex justify-content-start mb-3">
                     <div className="h3 font-weight-bold">
@@ -44,6 +63,7 @@ export default class Users extends Component<any, UsersState> {
                         <th>Роль</th>
                         <th>Страна</th>
                         <th>Подтверждён</th>
+                        <th>Действия</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -61,6 +81,17 @@ export default class Users extends Component<any, UsersState> {
                                 <td>{user.role}</td>
                                 <td>{user.country}</td>
                                 <td>{user.confirmed ? '✓' : '✘'}</td>
+                                <td>
+                                    {
+                                        JSON.parse(localStorage["user"])["id"] !== user.id ? (
+                                            <div className="trash-icon shadow-sm ml-4"
+                                                 onClick={(e) => {
+                                                     e.stopPropagation();
+                                                     this.delete(user.id);
+                                                 }}/>
+                                        ) : <div/>
+                                    }
+                                </td>
                             </tr>
                         )
                     })}

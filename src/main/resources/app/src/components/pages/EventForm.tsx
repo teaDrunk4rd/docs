@@ -83,7 +83,7 @@ export default class EventForm extends Component<any, EventFormState> {
                 }
             });
         else
-            axios.put('events/event/create', {
+            axios.post('events/event/create', {
                 name: this.state.name,
                 startDate: this.state.startDate,
                 c1Date: this.state.c1Date,

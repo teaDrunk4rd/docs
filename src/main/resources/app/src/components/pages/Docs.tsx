@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
+import {store} from "react-notifications-component";
 
 interface DocsState {
     docs: Array<any>,
@@ -27,9 +28,27 @@ export default class Docs extends Component<any, DocsState> {
         });
     }
 
+    delete(id: number) {
+        axios.delete(`docs/doc/delete?id=${id}`).then(response => {
+            if (response.status === 200) {
+                store.addNotification({
+                    message: "Документ удален",
+                    type: "warning",
+                    container: "top-right",
+                    dismiss: { duration: 2000, onScreen: true }
+                });
+
+                this.state.docs.splice(this.state.docs.indexOf(this.state.docs.find(function (d) {
+                    return d.id === id;
+                })), 1);
+                this.forceUpdate();
+            }
+        })
+    }
+
     render() {
         return (
-            <div className="col-md-6 m-auto">
+            <div className="col-md-7 m-auto">
                 {!this.state.isLoaded ? <Preloader/> : <div/>}
                 <div className="d-flex justify-content-between mb-3">
                     <div className="h3 font-weight-bold">
@@ -52,6 +71,7 @@ export default class Docs extends Component<any, DocsState> {
                         <th>День</th>
                         <th>Роль</th>
                         <th>Подписан</th>
+                        <th>Действия</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -69,6 +89,13 @@ export default class Docs extends Component<any, DocsState> {
                                 <td>{doc.day}</td>
                                 <td>{doc.role}</td>
                                 <td>{doc.signed ? '✓' : '✘'}</td>
+                                <td>
+                                    <div className="trash-icon shadow-sm ml-4"
+                                         onClick={(e) => {
+                                             e.stopPropagation();
+                                             this.delete(doc.id);
+                                         }}/>
+                                </td>
                             </tr>
                         )
                     })}

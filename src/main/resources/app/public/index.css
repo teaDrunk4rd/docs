@@ -1,6 +1,7 @@
 :root {
     --plus: url("data:image/svg+xml,<svg width='2em' height='2em' viewBox='0 0 16 16' class='bi bi-plus' fill='green' xmlns='http://www.w3.org/2000/svg'> <path fill-rule='evenodd' d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'/></svg>");
     --minus: url('data:image/svg+xml,<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-dash" fill="crimson" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/></svg>');
+    --trash: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" fill="crimson" class="bi bi-trash" viewBox="0 0 16 16"> <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/> <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/> </svg>');
     --plus-gray: url("data:image/svg+xml,<svg width='2em' height='2em' viewBox='0 0 16 16' class='bi bi-plus' fill='gray' xmlns='http://www.w3.org/2000/svg'> <path fill-rule='evenodd' d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'/></svg>");
     --minus-gray: url('data:image/svg+xml,<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-dash" fill="gray" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/></svg>');
 }
@@ -25,7 +26,7 @@ a {
     text-decoration: none !important;
 }
 
-.add-icon, .remove-icon {
+.add-icon, .remove-icon, .trash-icon {
     width: 2rem;
     height: 2rem;
     cursor: pointer;
@@ -33,6 +34,10 @@ a {
 
 .add-icon.disable, .remove-icon.disable {
     background-color: lightgray;
+}
+
+.trash-icon {
+    background-image: var(--trash);
 }
 
 .add-icon {

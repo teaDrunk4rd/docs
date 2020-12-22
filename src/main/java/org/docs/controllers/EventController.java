@@ -187,11 +187,11 @@ public class EventController {
             docRepo.saveAndFlush(doc);
         }
 
-        return ResponseEntity.ok(200);
+        return ResponseEntity.ok().build();
     }
 
     @Secured("ROLE_ADMIN")
-    @PutMapping("/events/event/create")
+    @PostMapping("/events/event/create")
     public ResponseEntity<?> store(@Valid @RequestBody EventRequest request) {
         Event event = new Event(
             request.getName(),
@@ -215,7 +215,22 @@ public class EventController {
             docRepo.saveAndFlush(doc);
         }
 
-        return ResponseEntity.ok(200);
+        return ResponseEntity.ok().build();
+    }
+
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/events/event/delete")
+    public ResponseEntity<?> delete(@RequestParam int id) {
+        Event event = eventRepo.findById(id).orElse(null);
+        if (event == null) return ResponseEntity.badRequest().build();
+
+        for (Doc doc : event.getDocs()) {
+            doc.getEvents().remove(event);
+            docRepo.saveAndFlush(doc);
+        }
+
+        eventRepo.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
     private Date incrementDay(Date date) { // TODO: убрать куда-нибудь

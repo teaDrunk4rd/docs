@@ -100,7 +100,7 @@ export default class DocForm extends Component<any, DocFormState> {
                 }
             });
         else
-            axios.put('docs/doc/create', {
+            axios.post('docs/doc/create', {
                 name: this.state.name,
                 dayId: this.state.day.id,
                 content: this.state.content,

@@ -42,7 +42,8 @@ export default class SignUp extends Component<any, RegistrationState> {
             if (response.status === 200) {
                 localStorage['user'] = JSON.stringify({
                     role: response.data.roles[0],
-                    name: response.data.name
+                    name: response.data.name,
+                    id: response.data.id
                 });
 
                 Cookies.set('token', `Bearer ${response.data.accessToken}`);

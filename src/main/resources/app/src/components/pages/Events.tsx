@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
+import {store} from "react-notifications-component";
 
 interface EventsState {
     events: Array<any>,
@@ -27,9 +28,27 @@ export default class Events extends Component<any, EventsState> {
         });
     }
 
+    delete(id: number) {
+        axios.delete(`events/event/delete?id=${id}`).then(response => {
+            if (response.status === 200) {
+                store.addNotification({
+                    message: "Событие удалено",
+                    type: "warning",
+                    container: "top-right",
+                    dismiss: { duration: 2000, onScreen: true }
+                });
+
+                this.state.events.splice(this.state.events.indexOf(this.state.events.find(function (e) {
+                    return e.id === id;
+                })), 1);
+                this.forceUpdate();
+            }
+        })
+    }
+
     render() {
         return (
-            <div className="col-md-6 m-auto">
+            <div className="col-md-7 m-auto">
                 {!this.state.isLoaded ? <Preloader/> : <div/>}
                 <div className="d-flex justify-content-between mb-3">
                     <div className="h3 font-weight-bold">
@@ -50,6 +69,7 @@ export default class Events extends Component<any, EventsState> {
                         <th>Событие</th>
                         <th>Даты</th>
                         <th>Участники</th>
+                        <th>Действия</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -65,6 +85,13 @@ export default class Events extends Component<any, EventsState> {
                                 <td>{event.event}</td>
                                 <td>{event.dates}</td>
                                 <td>{event.participantsCount}</td>
+                                <td>
+                                    <div className="trash-icon shadow-sm ml-4"
+                                         onClick={(e) => {
+                                             e.stopPropagation();
+                                             this.delete(event.id);
+                                         }}/>
+                                </td>
                             </tr>
                         )
                     })}

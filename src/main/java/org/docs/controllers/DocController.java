@@ -131,7 +131,7 @@ public class DocController {
         doc.setSigned(true);
         docRepo.saveAndFlush(doc);
 
-        return ResponseEntity.ok(200);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/docs/doc/events")
@@ -186,11 +186,11 @@ public class DocController {
         );
         docRepo.saveAndFlush(doc);
 
-        return ResponseEntity.ok(200);
+        return ResponseEntity.ok().build();
     }
 
     @Secured("ROLE_ADMIN")
-    @PutMapping("/docs/doc/create")
+    @PostMapping("/docs/doc/create")
     public ResponseEntity<?> store(@Valid @RequestBody DocRequest request) {
         Doc doc = new Doc(
             request.getName(),
@@ -205,6 +205,15 @@ public class DocController {
         );
         docRepo.saveAndFlush(doc);
 
-        return ResponseEntity.ok(200);
+        return ResponseEntity.ok().build();
+    }
+
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/docs/doc/delete")
+    public ResponseEntity<?> delete(@RequestParam int id) {
+        if (docRepo.findById(id).orElse(null) == null) return ResponseEntity.badRequest().build();
+
+        docRepo.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }

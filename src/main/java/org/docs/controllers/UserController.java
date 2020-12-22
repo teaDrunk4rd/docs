@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
@@ -165,6 +164,22 @@ public class UserController {
             eventRepo.saveAndFlush(event);
         }
 
-        return ResponseEntity.ok(200);
+        return ResponseEntity.ok().build();
+    }
+
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/users/user/delete")
+    public ResponseEntity<?> delete(@RequestParam int id) {
+        User user = userRepo.findById(id).orElse(null);
+        if (user == null || userDetailsGetter.getUserDetails().getId().equals(id))
+            return ResponseEntity.badRequest().build();
+
+        for (Event event : user.getEvents()) {
+            event.getUsers().remove(user);
+            eventRepo.saveAndFlush(event);
+        }
+
+        userRepo.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }
