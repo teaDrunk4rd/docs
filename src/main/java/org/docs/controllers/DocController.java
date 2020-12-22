@@ -76,6 +76,22 @@ public class DocController {
         );
     }
 
+    @Secured({"ROLE_ADMIN", "ROLE_EXPERT"})
+    @GetMapping("/docs/doc/downloadPermission")
+    public ResponseEntity<?> checkDownloadPermission(@RequestParam int id) {
+        User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).orElse(null);
+        Doc doc = docRepo.findById(id).orElse(null);
+
+        if (doc == null) return ResponseEntity.badRequest().build();
+
+        if (user == null || user.getRole().getERole() != ERole.ROLE_ADMIN &&
+                doc.getEvents().stream().noneMatch(e -> e.getUsers().stream()
+                        .anyMatch(u -> u.getId().equals(user.getId()) && doc.getRole() == u.getRole())))
+            return ResponseEntity.status(403).build();
+
+        return ResponseEntity.ok(true);
+    }
+
     @GetMapping("/docs/doc/events")
     public ResponseEntity<?> getDocEvents(@RequestParam int id) {
         User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).orElse(null);
@@ -90,6 +106,7 @@ public class DocController {
 
         return ResponseEntity.ok(
             doc.getEvents().stream()
+                .sorted(Comparator.comparing(Event::getName))
                 .map(e -> new EventsResponse(e.getId(), e.getName(), e.getDates(), e.getUsers().size()))
         );
     }
@@ -100,6 +117,7 @@ public class DocController {
         return ResponseEntity.ok(
             eventRepo.findAll().stream()
                 .filter(e -> !request.getEventIds().contains(e.getId()))
+                .sorted(Comparator.comparing(Event::getName))
                 .map(e -> new EventsResponse(e.getId(), e.getName(), e.getDates(), e.getUsers().size()))
         );
     }

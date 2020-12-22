@@ -14,7 +14,7 @@ public class Doc {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2228)
     private String content;
 
     @ManyToOne

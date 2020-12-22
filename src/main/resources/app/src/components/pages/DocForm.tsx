@@ -6,13 +6,14 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import DocEvents from "../DocEvents";
+import Doc from "./Doc";
 
 interface DocFormState {
     id: number,
     name: string,
-    dayId: number,
+    day: any,
     content: string,
-    roleId: number,
+    role: any,
     days: Array<any>,
     roles: Array<any>,
     isLoaded: boolean
@@ -27,9 +28,9 @@ export default class DocForm extends Component<any, DocFormState> {
         this.state = {
             id: props.location.state?.id,
             name: '',
-            dayId: 0,
+            day: null,
             content: '',
-            roleId: 0,
+            role: null,
             days: [],
             roles: [],
             isLoaded: false
@@ -44,9 +45,9 @@ export default class DocForm extends Component<any, DocFormState> {
                 if (response.status === 200)
                     this.setState({
                         name: response.data.name,
-                        dayId: response.data.day.id,
+                        day: response.data.day,
                         content: response.data.content,
-                        roleId: response.data.role.id,
+                        role: response.data.role,
                     });
             });
 
@@ -75,9 +76,9 @@ export default class DocForm extends Component<any, DocFormState> {
             axios.put('docs/doc/update', {
                 id: this.state.id,
                 name: this.state.name,
-                dayId: this.state.dayId,
+                dayId: this.state.day.id,
                 content: this.state.content,
-                roleId: this.state.roleId,
+                roleId: this.state.role.id,
                 eventIds: this.DocEvents.current?.state.events.map(p => p['id'])
             }).then(response => {
                 if (response.status === 200) {
@@ -93,9 +94,9 @@ export default class DocForm extends Component<any, DocFormState> {
         else
             axios.put('docs/doc/create', {
                 name: this.state.name,
-                dayId: this.state.dayId,
+                dayId: this.state.day.id,
                 content: this.state.content,
-                roleId: this.state.roleId,
+                roleId: this.state.role.id,
                 eventIds: this.DocEvents.current?.state.events.map(p => p['id'])
             }).then(response => {
                 if (response.status === 200) {
@@ -111,7 +112,7 @@ export default class DocForm extends Component<any, DocFormState> {
     }
 
     render() {
-        const {id, name, dayId, content, roleId, days, roles} = this.state;
+        const {id, name, day, content, role, days, roles} = this.state;
         return (
             <div className="col-8 m-auto">
                 <div className="card text-center">
@@ -137,10 +138,14 @@ export default class DocForm extends Component<any, DocFormState> {
 
                                 <div className="offset-md-2 col-md-3 mt-1">
                                     <FormControl variant="outlined" className="w-100">
-                                        <Select labelId="demo-simple-select-outlined-label"
-                                                id="demo-simple-select-outlined"
-                                                value={roleId}
-                                                onChange={event => this.setState({roleId: parseInt(event.target.value as string)})}
+                                        <Select value={role?.id || 0}
+                                                onChange={event => {
+                                                    this.setState({
+                                                        role: roles.find(function (r) {
+                                                            return r.id === event.target.value;
+                                                        })
+                                                    })
+                                                }}
                                                 className="pt-1 text-left padding-bottom-1px">
                                             {roles.length !== 0 && roles.map((role, index) => {
                                                 return (<MenuItem key={index} value={role.id}>{role.name}</MenuItem>)
@@ -150,10 +155,14 @@ export default class DocForm extends Component<any, DocFormState> {
                                 </div>
                                 <div className="offset-md-2 col-md-3 mt-1">
                                     <FormControl variant="outlined" className="w-100">
-                                        <Select labelId="demo-simple-select-outlined-label"
-                                                id="demo-simple-select-outlined"
-                                                value={dayId}
-                                                onChange={event => this.setState({dayId: parseInt(event.target.value as string)})}
+                                        <Select value={day?.id || 0}
+                                                onChange={event => {
+                                                    this.setState({
+                                                        day: days.find(function (r) {
+                                                            return r.id === event.target.value;
+                                                        })
+                                                    })
+                                                }}
                                                 className="pt-1 text-left padding-bottom-1px">
                                             {days.length !== 0 && days.map((day, index) => {
                                                 return (<MenuItem key={index} value={day.id}>{day.name}</MenuItem>)
@@ -181,7 +190,15 @@ export default class DocForm extends Component<any, DocFormState> {
 
                             <div className="row">
                                 <div className="offset-md-2 col-md-8 d-flex justify-content-end">
-                                    <button type="submit" className="btn btn-primary">
+                                    <div className="btn btn-outline-info mx-2"
+                                            onClick={() => Doc.download({
+                                                roleName: this.state.role.name,
+                                                dayName: this.state.day.name,
+                                                ...this.state
+                                            })}>
+                                        Скачать
+                                    </div>
+                                    <button type="submit" className="btn btn-success">
                                         Сохранить
                                     </button>
                                 </div>

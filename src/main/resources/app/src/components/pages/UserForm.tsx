@@ -194,7 +194,7 @@ export default class UserForm extends Component<any, UserFormState> {
 
                             <div className="row">
                                 <div className="col-md-7 offset-md-3 d-flex justify-content-end">
-                                    <button type="submit" className="btn btn-primary">
+                                    <button type="submit" className="btn btn-success">
                                         Сохранить
                                     </button>
                                 </div>

@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
 import DocEvents from "../DocEvents";
+import {saveAs} from "file-saver";
+import {Document, HeadingLevel, Packer, Paragraph,} from "docx";
 
 interface DocState {
     id: number,
@@ -27,7 +29,6 @@ export default class Doc extends Component<any, DocState> {
     }
 
     componentDidMount() {
-        debugger
         axios.get(`docs/doc?id=${this.state.id}`).then(response => {
             if (response.status === 200)
                 this.setState({
@@ -37,6 +38,39 @@ export default class Doc extends Component<any, DocState> {
                     roleName: response.data.role.name,
                     isLoaded: true
                 });
+        });
+    }
+
+    static download(document: any) {
+        axios.get(`/docs/doc/downloadPermission?id=${document.id}`).then(response => {
+            if (response.status === 200 && response.data) {
+                const doc = new Document();
+
+                doc.addSection({
+                    children: [
+                        new Paragraph({
+                            text: `Документ ${document.name}`,
+                            heading: HeadingLevel.HEADING_1
+                        }),
+                        new Paragraph({
+                            text: `День: ${document.dayName}`,
+                            heading: HeadingLevel.HEADING_3
+                        }),
+                        new Paragraph({
+                            text: `Роль: ${document.roleName}`,
+                            heading: HeadingLevel.HEADING_3
+                        }),
+                        new Paragraph({
+                            text: document.content,
+                            heading: HeadingLevel.HEADING_4
+                        }),
+                    ]
+                });
+
+                Packer.toBlob(doc).then(blob => {
+                    saveAs(blob, "example.docx");
+                });
+            }
         });
     }
 
@@ -54,6 +88,16 @@ export default class Doc extends Component<any, DocState> {
                     </div>
                     <div>События:</div>
                     <DocEvents readonly={true} docId={id}/>
+
+                    {
+                        JSON.parse(localStorage["user"])["role"] === "ROLE_EXPERT" ? (
+                            <div className="offset-md-2 col-md-8 d-flex justify-content-end mb-2">
+                                <button className="btn btn-outline-info" onClick={() => Doc.download(this.state)}>
+                                    Скачать
+                                </button>
+                            </div>
+                        ) : <div/>
+                    }
                 </div>
             </div>
         );

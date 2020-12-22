@@ -107,9 +107,9 @@ export default class EventForm extends Component<any, EventFormState> {
                     <div className="card-body">
                         <form onSubmit={this.handleSubmit} autoComplete='false'>
                             <div className="row mb-2">
-                                <label className="offset-md-2 col-md-4 col-form-label text-left">Наименование</label>
+                                <label className="offset-md-3 col-md-4 col-form-label text-left">Наименование</label>
 
-                                <div className="offset-md-2 col-md-7">
+                                <div className="offset-md-3 col-md-6">
                                     <input type="text"
                                            autoComplete="false"
                                            value={name}
@@ -119,11 +119,11 @@ export default class EventForm extends Component<any, EventFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <label className="offset-md-2 col-md-3 col-form-label text-left">Дата начала</label>
-                                <label className="offset-md-1 col-md-3 col-form-label text-left">Дата С1</label>
-                                <label className="col-md-3" />
+                                <label className="offset-md-3 col-md-3 col-form-label text-left">Дата начала</label>
+                                <label className="col-md-3 col-form-label text-left">Дата С1</label>
+                                <label className="col-md-2" />
 
-                                <div className="offset-md-2 col-md-3 mt-1">
+                                <div className="offset-md-3 col-md-3 mt-1">
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                                         <DatePicker
                                             value={startDate || null}
@@ -134,7 +134,7 @@ export default class EventForm extends Component<any, EventFormState> {
                                         />
                                     </MuiPickersUtilsProvider>
                                 </div>
-                                <div className="offset-md-1 col-md-3 mt-1">
+                                <div className="col-md-3 mt-1">
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                                         <DatePicker
                                             value={c1Date || null}
@@ -148,11 +148,11 @@ export default class EventForm extends Component<any, EventFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <label className="offset-md-2 col-md-3 col-form-label text-left">Дата С+1</label>
-                                <label className="offset-md-1 col-md-3 col-form-label text-left">Дата окончания</label>
-                                <label className="col-md-3" />
+                                <label className="offset-md-3 col-md-3 col-form-label text-left">Дата С+1</label>
+                                <label className="col-md-3 col-form-label text-left">Дата окончания</label>
+                                <label className="col-md-2" />
 
-                                <div className="offset-md-2 col-md-3 mt-1">
+                                <div className="offset-md-3 col-md-3 mt-1">
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                                         <DatePicker
                                             value={cplus1Date || null}
@@ -163,7 +163,7 @@ export default class EventForm extends Component<any, EventFormState> {
                                         />
                                     </MuiPickersUtilsProvider>
                                 </div>
-                                <div className="offset-md-1 col-md-3 mt-1">
+                                <div className="col-md-3 mt-1">
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                                         <DatePicker
                                             value={finishDate || null}
@@ -177,13 +177,13 @@ export default class EventForm extends Component<any, EventFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <div className="offset-md-2 col-md-10 text-left">Участники события</div>
+                                <div className="offset-md-3 col-md-6 text-left">Участники события</div>
                                 <Participants ref={this.Participants} eventId={id}/>
                             </div>
 
                             <div className="row">
-                                <div className="col-md-7 offset-md-2 d-flex justify-content-end">
-                                    <button type="submit" className="btn btn-primary">
+                                <div className="offset-md-3 col-md-6 d-flex justify-content-end">
+                                    <button type="submit" className="btn btn-success">
                                         Сохранить
                                     </button>
                                 </div>

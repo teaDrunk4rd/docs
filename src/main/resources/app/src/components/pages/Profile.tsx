@@ -233,7 +233,7 @@ export default class Profile extends Component<any, ProfileState> {
 
                             <div className="form-group row mb-0">
                                 <div className="col-md-8 offset-md-4">
-                                    <button type="submit" className="btn btn-primary">
+                                    <button type="submit" className="btn btn-outline-success">
                                         Изменить
                                     </button>
                                 </div>

@@ -37,9 +37,9 @@ export default class Docs extends Component<any, DocsState> {
                     </div>
                     {
                         JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" ? (
-                            <button className="btn btn-primary"
+                            <button className="btn btn-outline-success"
                                     onClick={() => this.props.history.push({pathname: "docs/docForm"})}>
-                                Создать
+                                Добавить
                             </button>
                         ) : <div/>
                     }

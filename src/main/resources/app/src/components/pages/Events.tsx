@@ -37,8 +37,8 @@ export default class Events extends Component<any, EventsState> {
                     </div>
                     {
                         JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" ? (
-                            <button className="btn btn-primary" onClick={() => this.props.history.push({pathname: "/eventForm"})}>
-                                Создать
+                            <button className="btn btn-outline-success" onClick={() => this.props.history.push({pathname: "/eventForm"})}>
+                                Добавить
                             </button>
                         ) : <div/>
                     }

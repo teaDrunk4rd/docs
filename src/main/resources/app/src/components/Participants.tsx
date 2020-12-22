@@ -55,7 +55,7 @@ export default class Participants extends Component<ParticipantsProps, Participa
     render() {
         const {participants, selectedParticipant} = this.state;
         return (
-            <div className="offset-md-2 col-md-7 d-flex">
+            <div className="offset-md-3 col-md-6 d-flex">
                 <table className="table table-hover mt-2">
                     <thead className="table-dark">
                     <tr>
