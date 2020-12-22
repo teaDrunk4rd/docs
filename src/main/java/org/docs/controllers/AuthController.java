@@ -63,7 +63,7 @@ public class AuthController {
     }
 
     @PostMapping("signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignupRequest signUpRequest) {
         String validationMessage = signUpRequest.validate(userRepo);
         if (validationMessage != null) return ResponseEntity.badRequest().body(new MessageResponse(validationMessage));
 

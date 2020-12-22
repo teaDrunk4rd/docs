@@ -35,7 +35,7 @@ public class DocController {
     private UserDetailsGetter userDetailsGetter;
 
     @GetMapping("/docs")
-    public ResponseEntity<?> getDocs() {
+    public ResponseEntity<?> index() {
         User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).get();
 
         return ResponseEntity.ok(
@@ -61,7 +61,7 @@ public class DocController {
     }
 
     @GetMapping("/docs/doc")
-    public ResponseEntity<?> getDoc(@RequestParam int id) {
+    public ResponseEntity<?> show(@RequestParam int id) {
         User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).orElse(null);
         Doc doc = docRepo.findById(id).orElse(null);
 
@@ -167,7 +167,7 @@ public class DocController {
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/docs/doc/update")
-    public ResponseEntity<?> updateDoc(@Valid @RequestBody DocRequest request) {
+    public ResponseEntity<?> update(@Valid @RequestBody DocRequest request) {
         Doc doc = docRepo.findById(request.getId()).orElse(null);
 
         if (doc == null) return ResponseEntity.badRequest().build();
@@ -190,7 +190,7 @@ public class DocController {
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/docs/doc/create")
-    public ResponseEntity<?> createDoc(@Valid @RequestBody DocRequest request) {
+    public ResponseEntity<?> store(@Valid @RequestBody DocRequest request) {
         Doc doc = new Doc(
             request.getName(),
             request.getContent(),

@@ -33,12 +33,12 @@ public class UserController {
     private PasswordEncoder encoder;
 
     @GetMapping("profiles")
-    public User show() {
+    public User showProfile() {
         return userRepo.findById(userDetailsGetter.getUserDetails().getId()).orElse(null);
     }
 
     @PutMapping("profiles/update")
-    public ResponseEntity<?> update(@Valid @RequestBody UpdateProfileRequest updateUserRequest) {
+    public ResponseEntity<?> updateProfile(@Valid @RequestBody UpdateProfileRequest updateUserRequest) {
         User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).orElse(null);
 
         String validationMessage = updateUserRequest.validate(userRepo, user, encoder);
@@ -63,7 +63,7 @@ public class UserController {
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/users")
-    public ResponseEntity<?> getUsers() {
+    public ResponseEntity<?> index() {
         return ResponseEntity.ok(
             userRepo.findAll().stream()
                 .sorted(Comparator.comparing(User::getFullName).thenComparing(u -> u.getRole().getName()))
@@ -80,7 +80,7 @@ public class UserController {
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/users/user")
-    public ResponseEntity<?> getUser(@RequestParam int id) {
+    public ResponseEntity<?> show(@RequestParam int id) {
         User user = userRepo.findById(id).orElse(null);
 
         if (user == null) return ResponseEntity.status(404).build();
@@ -102,7 +102,7 @@ public class UserController {
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/users/user/update")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest request) {
+    public ResponseEntity<?> update(@Valid @RequestBody UpdateUserRequest request) {
         User user = userRepo.findById(request.getId()).orElse(null);
         if (user == null) return ResponseEntity.status(404).build();
 

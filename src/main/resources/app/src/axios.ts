@@ -1,34 +1,31 @@
 import {store} from 'react-notifications-component';
 import Cookies from 'js-cookie';
+import axios from "axios";
 
-declare global {
-    interface Window {
-        axios: any;
-    }
+function isValidMessage(message: string){
+    return /^[А-Яа-я0-9 _]*[А-Яа-я0-9][А-Яа-я0-9 _]*$/.test(message);
 }
 
-window.axios = require('axios');
-
-window.axios.interceptors.request.use((config: any) => {
+axios.interceptors.request.use((config: any) => {
     config.url = `http://localhost:8080/api/${config.url}`;
     config.headers.Authorization = Cookies.get('token') || null;
     return config;
 });
 
-window.axios.interceptors.response.use((response: any) => {
+axios.interceptors.response.use((response: any) => {
     return response;
 }, (error: any) => {
     let message: string;
 
-    if (error.response && error.response.data.errors) {
+    if (error.response && error.response.data.errors && isValidMessage(error.response.data.errors[0].defaultMessage[0])) {
         message = error.response.data.errors[0].defaultMessage;
-    } else if (error.response && error.response.data.message) {
+    } else if (error.response && error.response.data.message && isValidMessage(error.response.data.message[0])) {
         message = error.response.data.message;
     } else if (error.response && error.response.status === 403) {
         message = "Доступ запрещён";
     } else if (error.response && error.response.status === 401) {
         localStorage.clear();
-        // history.pushState({}, '', '/login'); // TODO: check it
+        // history.pushState({}, '', '/login'); // TODO: fix it
         message = "Требуется авторизация";
     } else {
         message = "Произошла ошибка";

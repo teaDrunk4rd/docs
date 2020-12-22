@@ -39,7 +39,7 @@ public class EventController {
     private UserDetailsGetter userDetailsGetter;
 
     @GetMapping("/events")
-    public ResponseEntity<?> getEvents() {
+    public ResponseEntity<?> index() {
         User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).get();
 
         return ResponseEntity.ok(
@@ -52,7 +52,7 @@ public class EventController {
     }
 
     @GetMapping("/events/event")
-    public ResponseEntity<?> showEvent(@RequestParam int id) {
+    public ResponseEntity<?> show(@RequestParam int id) {
         User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).orElse(null);
         Event event = eventRepo.findById(id).orElse(null);
 
@@ -104,7 +104,7 @@ public class EventController {
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/events/event/update")
-    public ResponseEntity<?> updateEvent(@Valid @RequestBody EventRequest request) {
+    public ResponseEntity<?> update(@Valid @RequestBody EventRequest request) {
         Event event = eventRepo.findById(request.getId()).orElse(null);
 
         if (event == null) return ResponseEntity.badRequest().build();
@@ -132,7 +132,7 @@ public class EventController {
 
     @Secured("ROLE_ADMIN")
     @PutMapping("/events/event/create")
-    public ResponseEntity<?> createEvent(@Valid @RequestBody EventRequest request) {
+    public ResponseEntity<?> store(@Valid @RequestBody EventRequest request) {
         Event event = new Event(
             request.getName(),
             userRepo.findAll().stream()
