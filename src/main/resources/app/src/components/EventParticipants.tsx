@@ -7,75 +7,72 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import {Modal} from "@material-ui/core";
-import DocFreeEvents from "./DocFreeEvents";
+import EventUnsignedUsers from "./EventUnsignedUsers";
 
-interface DocEventsProps {
-    docId: number,
+interface ParticipantsProps {
+    eventId: number,
     readonly?: boolean
 }
 
-interface DocEventsState {
-    events: Array<any>,
-    selectedEvent: any,
+interface ParticipantsState {
+    participants: Array<any>,
+    selectedParticipant: any,
     openDeleteDialog: boolean,
     openAddModal: boolean
 }
 
 
-export default class DocEvents extends Component<DocEventsProps, DocEventsState> {
-    private readonly DocFreeEvents: React.RefObject<DocFreeEvents>;
-
-    constructor(props: DocEventsProps) {
+export default class EventParticipants extends Component<ParticipantsProps, ParticipantsState> {
+    private readonly EventUnsignedUsers: React.RefObject<EventUnsignedUsers>;
+    constructor(props: ParticipantsProps) {
         super(props);
 
         this.state = {
-            events: [],
-            selectedEvent: null,
+            participants: [],
+            selectedParticipant: null,
             openDeleteDialog: false,
             openAddModal: false
         }
-        this.DocFreeEvents = React.createRef();
-        this.assignEvents = this.assignEvents.bind(this);
+        this.EventUnsignedUsers = React.createRef();
+        this.assignUsers = this.assignUsers.bind(this);
     }
 
     componentDidMount() {
-        if (this.props.docId !== undefined)
-            axios.get(`docs/doc/events?id=${this.props.docId}`).then(response => {
+        if (this.props.eventId !== undefined)
+            axios.get(`events/event/participants?id=${this.props.eventId}`).then(response => {
                 if (response.status === 200)
                     this.setState({
-                        events: response.data
+                        participants: response.data
                     });
             });
     }
 
-    assignEvents(event: any) {
-        this.DocFreeEvents.current?.state.markedEvents.forEach(event => this.state.events.push(event));
+    assignUsers(event: any) {
+        this.EventUnsignedUsers.current?.state.markedUsers.forEach(user => this.state.participants.push(user));
         this.setState({openAddModal: false})
     }
 
     render() {
-        const {events, selectedEvent} = this.state;
+        const {participants, selectedParticipant} = this.state;
         return (
             <div className="offset-md-2 col-md-8 d-flex">
                 <table className="table table-hover mt-2">
                     <thead className="table-dark">
                     <tr>
-                        <th>Событие</th>
-                        <th>Даты</th>
-                        <th>Участники</th>
+                        <th>Пользователь</th>
+                        <th>Роль</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {events && events.map((event, index) => {
+                    {participants && participants.map((participant, index) => {
                         return (
                             <tr className={
-                                !this.props.readonly && event === selectedEvent ? 'cursor-pointer table-primary' :
-                                    !this.props.readonly ? 'cursor-pointer' : ''}
-                                onClick={() => this.setState({selectedEvent: event})}
+                                !this.props.readonly && participant === selectedParticipant ? 'cursor-pointer table-primary' :
+                                !this.props.readonly ? 'cursor-pointer' : ''}
+                                onClick={() => this.setState({selectedParticipant: participant})}
                                 key={index}>
-                                <td>{event.event}</td>
-                                <td>{event.dates}</td>
-                                <td>{event.participantsCount}</td>
+                                <td>{participant.user}</td>
+                                <td>{participant.role}</td>
                             </tr>
                         )
                     })}
@@ -86,7 +83,7 @@ export default class DocEvents extends Component<DocEventsProps, DocEventsState>
                     !this.props.readonly ? (
                         <div className='ml-4 mt-2'>
                             <div className="add-icon shadow mb-3" onClick={() => this.setState({openAddModal: true})} />
-                            <div className={`remove-icon shadow ${selectedEvent == null ? 'disable' : ''}`}
+                            <div className={`remove-icon shadow ${selectedParticipant == null ? 'disable' : ''}`}
                                  onClick={() => this.setState({openDeleteDialog: true})} />
                         </div>
                     ) : <div/>
@@ -100,7 +97,7 @@ export default class DocEvents extends Component<DocEventsProps, DocEventsState>
                     <DialogTitle id="alert-dialog-title">Подтверждение удаления</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Вы действительно хотите открепить событие?
+                            Вы действительно хотите удалить участника события?
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -108,7 +105,7 @@ export default class DocEvents extends Component<DocEventsProps, DocEventsState>
                             Отмена
                         </Button>
                         <Button onClick={() => {
-                            events.splice(events.indexOf(selectedEvent), 1);
+                            participants.splice(participants.indexOf(selectedParticipant), 1);
                             this.forceUpdate();
                             this.setState({openDeleteDialog: false});
                         }} color="secondary">
@@ -125,12 +122,12 @@ export default class DocEvents extends Component<DocEventsProps, DocEventsState>
                     className="d-flex justify-content-center align-items-center">
                     <div className="col-md-6 bg-white my-5">
                         <div className="mt-2">
-                            <i>Отметьте события, которые Вы хотите прикрепить к документу</i>
+                            <i>Отметьте пользователей, которых Вы хотите записать</i>
                         </div>
-                        <DocFreeEvents ref={this.DocFreeEvents} docEvents={events} />
+                        <EventUnsignedUsers ref={this.EventUnsignedUsers} participants={participants} />
                         <div className="d-flex justify-content-end mb-3">
-                            <button className="btn btn-primary" onClick={this.assignEvents}>
-                                Прикрепить
+                            <button className="btn btn-primary" onClick={this.assignUsers}>
+                                Записать
                             </button>
                         </div>
                     </div>

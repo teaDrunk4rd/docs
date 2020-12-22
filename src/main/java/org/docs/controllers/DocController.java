@@ -5,6 +5,7 @@ import org.docs.db.entities.Doc;
 import org.docs.db.entities.Event;
 import org.docs.db.entities.User;
 import org.docs.db.repos.*;
+import org.docs.payload.request.DocFreeEventsRequest;
 import org.docs.payload.request.DocRequest;
 import org.docs.payload.response.*;
 import org.docs.security.UserDetailsGetter;

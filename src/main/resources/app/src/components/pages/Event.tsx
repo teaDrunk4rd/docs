@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
-import Participants from "../Participants";
+import EventParticipants from "../EventParticipants";
 
 interface EventFormState {
     id: number,
@@ -88,7 +88,7 @@ export default class Event extends Component<any, EventFormState> {
                             </table>
                         </div>
                         <div className="mt-2">Участники события:</div>
-                        <Participants readonly={true} eventId={id}/>
+                        <EventParticipants readonly={true} eventId={id}/>
                     </div>
                 </div>
             </div>

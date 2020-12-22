@@ -1,4 +1,4 @@
-package org.docs.payload.response;
+package org.docs.payload.request;
 
 import java.util.List;
 

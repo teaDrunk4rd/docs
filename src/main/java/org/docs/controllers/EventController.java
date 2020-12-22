@@ -1,15 +1,15 @@
 package org.docs.controllers;
 
 import org.docs.db.ERole;
+import org.docs.db.entities.Doc;
 import org.docs.db.entities.Event;
 import org.docs.db.entities.EventDay;
 import org.docs.db.entities.User;
-import org.docs.db.repos.DayRepo;
-import org.docs.db.repos.EventDayRepo;
-import org.docs.db.repos.EventRepo;
-import org.docs.db.repos.UserRepo;
+import org.docs.db.repos.*;
+import org.docs.payload.request.EventFreeDocsRequest;
 import org.docs.payload.request.UnsignedUsersRequest;
 import org.docs.payload.request.EventRequest;
+import org.docs.payload.response.DocsResponse;
 import org.docs.payload.response.EventResponse;
 import org.docs.payload.response.EventsResponse;
 import org.docs.payload.response.EventUserResponse;
@@ -31,6 +31,8 @@ public class EventController {
     private UserRepo userRepo;
     @Autowired
     private EventRepo eventRepo;
+    @Autowired
+    private DocRepo docRepo;
     @Autowired
     private EventDayRepo eventDayRepo;
     @Autowired
@@ -102,6 +104,51 @@ public class EventController {
         );
     }
 
+    @GetMapping("/events/event/docs")
+    public ResponseEntity<?> getEventDocs(@RequestParam int id) {
+        User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).orElse(null);
+        Event event = eventRepo.findById(id).orElse(null);
+
+        if (event == null) return ResponseEntity.badRequest().build();
+
+        if (user == null || user.getRole().getERole() != ERole.ROLE_ADMIN &&
+                event.getUsers().stream().noneMatch(u -> u.getId().equals(user.getId())))
+            return ResponseEntity.status(403).build();
+
+        return ResponseEntity.ok(
+            event.getDocs().stream()
+                .filter(d -> user.getRole().getERole() == ERole.ROLE_ADMIN ||
+                        d.getEvents().stream()
+                                .anyMatch(e -> e.getUsers().stream()
+                                        .anyMatch(u -> u.getId().equals(user.getId()) && d.getRole() == u.getRole())))
+                .sorted(Comparator.comparing(Doc::getName))
+                .map(d -> new DocsResponse(
+                    d.getId(),
+                    d.getName(),
+                    d.getDay().getName(),
+                    d.getRole().getName(),
+                    d.getSigned()
+                ))
+        );
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PostMapping("/events/event/freeDocs")
+    public ResponseEntity<?> getFreeDocs(@RequestBody EventFreeDocsRequest request) {
+        return ResponseEntity.ok(
+            docRepo.findAll().stream()
+                .filter(e -> !request.getDocIds().contains(e.getId()))
+                .sorted(Comparator.comparing(Doc::getName))
+                .map(d -> new DocsResponse(
+                        d.getId(),
+                        d.getName(),
+                        d.getDay().getName(),
+                        d.getRole().getName(),
+                        d.getSigned()
+                ))
+        );
+    }
+
     @Secured("ROLE_ADMIN")
     @PutMapping("/events/event/update")
     public ResponseEntity<?> update(@Valid @RequestBody EventRequest request) {
@@ -127,6 +174,12 @@ public class EventController {
             new EventDay(event, dayRepo.findByKey("c+2"), request.getFinishDate())
         ));
 
+        docRepo.deleteByEvents(Arrays.asList(event));
+        for (Doc doc: docRepo.findAllById(request.getDocIds())) {
+            doc.getEvents().add(event);
+            docRepo.saveAndFlush(doc);
+        }
+
         return ResponseEntity.ok(200);
     }
 
@@ -149,6 +202,11 @@ public class EventController {
             new EventDay(event, dayRepo.findByKey("c+1"), request.getCplus1Date()),
             new EventDay(event, dayRepo.findByKey("c+2"), request.getFinishDate())
         ));
+
+        for (Doc doc: docRepo.findAllById(request.getDocIds())) {
+            doc.getEvents().add(event);
+            docRepo.saveAndFlush(doc);
+        }
 
         return ResponseEntity.ok(200);
     }

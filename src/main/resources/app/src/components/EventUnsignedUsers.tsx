@@ -11,7 +11,7 @@ interface UnsignedUsersState {
 }
 
 
-export default class UnsignedUsers extends Component<UnsignedUsersProps, UnsignedUsersState> {
+export default class EventUnsignedUsers extends Component<UnsignedUsersProps, UnsignedUsersState> {
     constructor(props: UnsignedUsersProps) {
         super(props);
 

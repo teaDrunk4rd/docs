@@ -18,18 +18,20 @@ public class EventRequest {
     @NotNull(message = "Заполните дату окончания")
     private Date finishDate;
     private List<Integer> participantIds;
+    private List<Integer> docIds;
 
     public EventRequest() {
     }
 
-    public EventRequest(Integer id, @NotBlank(message = "Заполните наименование") String name, @NotBlank(message = "Заполните дату начала") Date startDate, @NotBlank(message = "Заполните дату С1") Date c1Date, @NotBlank(message = "Заполните дату С+1") Date cplus1Date, @NotBlank(message = "Заполните дату окончания") Date finishDate, List<Integer> participants) {
+    public EventRequest(Integer id, @NotBlank(message = "Заполните наименование") String name, @NotNull(message = "Заполните дату начала") Date startDate, @NotNull(message = "Заполните дату С1") Date c1Date, @NotNull(message = "Заполните дату С+1") Date cplus1Date, @NotNull(message = "Заполните дату окончания") Date finishDate, List<Integer> participantIds, List<Integer> docIds) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.c1Date = c1Date;
         this.cplus1Date = cplus1Date;
         this.finishDate = finishDate;
-        this.participantIds = participants;
+        this.participantIds = participantIds;
+        this.docIds = docIds;
     }
 
     public Integer getId() {
@@ -86,5 +88,13 @@ public class EventRequest {
 
     public void setParticipantIds(List<Integer> participantIds) {
         this.participantIds = participantIds;
+    }
+
+    public List<Integer> getDocIds() {
+        return docIds;
+    }
+
+    public void setDocIds(List<Integer> docIds) {
+        this.docIds = docIds;
     }
 }

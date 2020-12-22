@@ -5,7 +5,8 @@ import {store} from "react-notifications-component";
 import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import ruLocale from "date-fns/locale/ru";
-import Participants from "../Participants";
+import EventParticipants from "../EventParticipants";
+import EventDocs from "../EventDocs";
 
 interface EventFormState {
     id: number,
@@ -20,7 +21,8 @@ interface EventFormState {
 }
 
 export default class EventForm extends Component<any, EventFormState> {
-    private readonly Participants: React.RefObject<Participants>;
+    private readonly EventParticipants: React.RefObject<EventParticipants>;
+    private readonly EventDocs: React.RefObject<EventDocs>;
 
     constructor(props: any) {
         super(props);
@@ -34,7 +36,10 @@ export default class EventForm extends Component<any, EventFormState> {
             finishDate: undefined,
             isLoaded: props.location.state?.id === undefined
         };
-        this.Participants = React.createRef();
+
+        this.EventParticipants = React.createRef();
+        this.EventDocs = React.createRef();
+
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -64,7 +69,8 @@ export default class EventForm extends Component<any, EventFormState> {
                 c1Date: this.state.c1Date,
                 cplus1Date: this.state.cplus1Date,
                 finishDate: this.state.finishDate,
-                participantIds: this.Participants.current?.state.participants.map(p => p['id'])
+                participantIds: this.EventParticipants.current?.state.participants.map(p => p['id']),
+                docIds: this.EventDocs.current?.state.docs.map(d => d['id'])
             }).then(response => {
                 if (response.status === 200) {
                     store.addNotification({
@@ -83,7 +89,8 @@ export default class EventForm extends Component<any, EventFormState> {
                 c1Date: this.state.c1Date,
                 cplus1Date: this.state.cplus1Date,
                 finishDate: this.state.finishDate,
-                participantIds: this.Participants.current?.state.participants.map(p => p['id'])
+                participantIds: this.EventParticipants.current?.state.participants.map(p => p['id']),
+                docIds: this.EventDocs.current?.state.docs.map(d => d['id'])
             }).then(response => {
                 if (response.status === 200) {
                     store.addNotification({
@@ -100,16 +107,16 @@ export default class EventForm extends Component<any, EventFormState> {
     render() {
         const {id, name, startDate, c1Date, cplus1Date, finishDate} = this.state;
         return (
-            <div className="col-10 m-auto">
+            <div className="col-8 m-auto">
                 <div className="card text-center">
                     {!this.state.isLoaded ? <Preloader className='event-loader' /> : <div/>}
                     <div className="card-header">Событие</div>
                     <div className="card-body">
                         <form onSubmit={this.handleSubmit} autoComplete='false'>
                             <div className="row mb-2">
-                                <label className="offset-md-3 col-md-4 col-form-label text-left">Наименование</label>
+                                <label className="offset-md-2 col-md-8 col-form-label text-left">Наименование</label>
 
-                                <div className="offset-md-3 col-md-6">
+                                <div className="offset-md-2 col-md-8">
                                     <input type="text"
                                            autoComplete="false"
                                            value={name}
@@ -119,11 +126,11 @@ export default class EventForm extends Component<any, EventFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <label className="offset-md-3 col-md-3 col-form-label text-left">Дата начала</label>
-                                <label className="col-md-3 col-form-label text-left">Дата С1</label>
+                                <label className="offset-md-2 col-md-4 col-form-label text-left">Дата начала</label>
+                                <label className="col-md-4 col-form-label text-left">Дата С1</label>
                                 <label className="col-md-2" />
 
-                                <div className="offset-md-3 col-md-3 mt-1">
+                                <div className="offset-md-2 col-md-4 mt-1">
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                                         <DatePicker
                                             value={startDate || null}
@@ -134,7 +141,7 @@ export default class EventForm extends Component<any, EventFormState> {
                                         />
                                     </MuiPickersUtilsProvider>
                                 </div>
-                                <div className="col-md-3 mt-1">
+                                <div className="col-md-4 mt-1">
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                                         <DatePicker
                                             value={c1Date || null}
@@ -148,11 +155,11 @@ export default class EventForm extends Component<any, EventFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <label className="offset-md-3 col-md-3 col-form-label text-left">Дата С+1</label>
-                                <label className="col-md-3 col-form-label text-left">Дата окончания</label>
+                                <label className="offset-md-2 col-md-4 col-form-label text-left">Дата С+1</label>
+                                <label className="col-md-4 col-form-label text-left">Дата окончания</label>
                                 <label className="col-md-2" />
 
-                                <div className="offset-md-3 col-md-3 mt-1">
+                                <div className="offset-md-2 col-md-4 mt-1">
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                                         <DatePicker
                                             value={cplus1Date || null}
@@ -163,7 +170,7 @@ export default class EventForm extends Component<any, EventFormState> {
                                         />
                                     </MuiPickersUtilsProvider>
                                 </div>
-                                <div className="col-md-3 mt-1">
+                                <div className="col-md-4 mt-1">
                                     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                                         <DatePicker
                                             value={finishDate || null}
@@ -177,12 +184,17 @@ export default class EventForm extends Component<any, EventFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <div className="offset-md-3 col-md-6 text-left">Участники события</div>
-                                <Participants ref={this.Participants} eventId={id}/>
+                                <div className="offset-md-2 col-md-8 text-left">Участники события</div>
+                                <EventParticipants ref={this.EventParticipants} eventId={id}/>
+                            </div>
+
+                            <div className="row mb-2">
+                                <div className="offset-md-2 col-md-8 text-left">Прикрепленные документы</div>
+                                <EventDocs ref={this.EventDocs} eventId={id}/>
                             </div>
 
                             <div className="row">
-                                <div className="offset-md-3 col-md-6 d-flex justify-content-end">
+                                <div className="offset-md-2 col-md-8 d-flex justify-content-end">
                                     <button type="submit" className="btn btn-success">
                                         Сохранить
                                     </button>

@@ -20,7 +20,7 @@ export class Router extends Component {
         return (
             <div>
                 <NavMenu/>
-                <div className='row mx-5'>
+                <div className='row mx-5 mb-3'>
                     {this.props.children}
                     <Switch>
                         <Route exact path="/login" component={Login}/>
