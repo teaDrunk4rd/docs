@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
 import EventParticipants from "../EventParticipants";
+import EventDocs from "../EventDocs";
 
 interface EventFormState {
     id: number,
@@ -87,8 +88,12 @@ export default class Event extends Component<any, EventFormState> {
                                 </tbody>
                             </table>
                         </div>
+
                         <div className="mt-2">Участники события:</div>
                         <EventParticipants readonly={true} eventId={id}/>
+
+                        <div className="mt-2">Документы:</div>
+                        <EventDocs readonly={true} eventId={id}/>
                     </div>
                 </div>
             </div>

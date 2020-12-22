@@ -111,7 +111,6 @@ export default class EventDocs extends Component<EventDocsProps, EventDocsState>
                         </Button>
                         <Button onClick={() => {
                             docs.splice(docs.indexOf(selectedDoc), 1);
-                            this.forceUpdate();
                             this.setState({openDeleteDialog: false});
                         }} color="secondary">
                             Удалить

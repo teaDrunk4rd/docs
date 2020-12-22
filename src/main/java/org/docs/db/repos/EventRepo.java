@@ -7,9 +7,8 @@ import java.util.List;
 
 public interface EventRepo extends CrudRepository<Event, Integer> {
     Event findByName(String name);
-
-    void saveAndFlush(Event event);
-
     @Override
     List<Event> findAll();
+
+    void saveAndFlush(Event event);
 }

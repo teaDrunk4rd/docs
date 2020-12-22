@@ -7,9 +7,8 @@ import java.util.List;
 
 public interface UserRepo extends CrudRepository<User, Integer> {
     User findByEmail(String email);
-
-    void saveAndFlush(User user);
-
     @Override
     List<User> findAll();
+
+    void saveAndFlush(User user);
 }

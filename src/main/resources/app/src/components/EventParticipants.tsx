@@ -106,7 +106,6 @@ export default class EventParticipants extends Component<ParticipantsProps, Part
                         </Button>
                         <Button onClick={() => {
                             participants.splice(participants.indexOf(selectedParticipant), 1);
-                            this.forceUpdate();
                             this.setState({openDeleteDialog: false});
                         }} color="secondary">
                             Удалить

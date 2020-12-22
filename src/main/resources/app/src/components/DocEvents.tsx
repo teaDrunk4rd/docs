@@ -109,7 +109,6 @@ export default class DocEvents extends Component<DocEventsProps, DocEventsState>
                         </Button>
                         <Button onClick={() => {
                             events.splice(events.indexOf(selectedEvent), 1);
-                            this.forceUpdate();
                             this.setState({openDeleteDialog: false});
                         }} color="secondary">
                             Удалить
