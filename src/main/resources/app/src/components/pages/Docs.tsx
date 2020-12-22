@@ -51,6 +51,7 @@ export default class Docs extends Component<any, DocsState> {
                         <th>Наименование</th>
                         <th>День</th>
                         <th>Роль</th>
+                        <th>Подписан</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -67,6 +68,7 @@ export default class Docs extends Component<any, DocsState> {
                                 <td>{doc.doc}</td>
                                 <td>{doc.day}</td>
                                 <td>{doc.role}</td>
+                                <td>{doc.signed ? '✓' : '✘'}</td>
                             </tr>
                         )
                     })}

@@ -50,7 +50,13 @@ public class DocController {
 //                                .collect(Collectors.joining(",")))
 //                )
                 .sorted(Comparator.comparing(Doc::getName))
-                .map(d -> new DocsResponse(d.getId(), d.getName(), d.getDay().getName(), d.getRole().getName()))
+                .map(d -> new DocsResponse(
+                    d.getId(),
+                    d.getName(),
+                    d.getDay().getName(),
+                    d.getRole().getName(),
+                    d.getSigned()
+                ))
         );
     }
 
@@ -71,7 +77,9 @@ public class DocController {
                 doc.getName(),
                 doc.getDay(),
                 doc.getContent(),
-                doc.getRole()
+                doc.getRole(),
+                doc.getSigned(),
+                doc.getPIN()
             )
         );
     }
@@ -92,6 +100,39 @@ public class DocController {
         return ResponseEntity.ok(true);
     }
 
+    @Secured({"ROLE_EXPERT", "ROLE_LISTENER"})
+    @GetMapping("/docs/doc/signPermission")
+    public ResponseEntity<?> checkSignPermission(@RequestParam int id) {
+        User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).orElse(null);
+        Doc doc = docRepo.findById(id).orElse(null);
+
+        if (doc == null) return ResponseEntity.badRequest().build();
+
+        if (user == null || doc.getEvents().stream().noneMatch(e -> e.getUsers().stream()
+                .anyMatch(u -> u.getId().equals(user.getId()) && doc.getRole() == u.getRole())))
+            return ResponseEntity.status(403).build();
+
+        return ResponseEntity.ok(user.canSignDoc(doc));
+    }
+
+    @Secured({"ROLE_EXPERT", "ROLE_LISTENER"})
+    @GetMapping("/docs/doc/sign")
+    public ResponseEntity<?> signDoc(@RequestParam int id) {
+        User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).orElse(null);
+        Doc doc = docRepo.findById(id).orElse(null);
+
+        if (doc == null) return ResponseEntity.badRequest().build();
+
+        if (user == null || !user.canSignDoc(doc) || doc.getEvents().stream().noneMatch(e -> e.getUsers()
+                .stream().anyMatch(u -> u.getId().equals(user.getId()) && doc.getRole() == u.getRole())))
+            return ResponseEntity.status(403).build();
+
+        doc.setSigned(true);
+        docRepo.saveAndFlush(doc);
+
+        return ResponseEntity.ok(200);
+    }
+
     @GetMapping("/docs/doc/events")
     public ResponseEntity<?> getDocEvents(@RequestParam int id) {
         User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).orElse(null);
@@ -106,6 +147,8 @@ public class DocController {
 
         return ResponseEntity.ok(
             doc.getEvents().stream()
+                .filter(e -> user.getRole().getERole() == ERole.ROLE_ADMIN ||
+                        e.getUsers().stream().anyMatch(u -> u.getId().equals(user.getId())))
                 .sorted(Comparator.comparing(Event::getName))
                 .map(e -> new EventsResponse(e.getId(), e.getName(), e.getDates(), e.getUsers().size()))
         );
@@ -133,6 +176,8 @@ public class DocController {
         doc.setRole(roleRepo.findById(request.getRoleId()).get());
         doc.setDay(dayRepo.findById(request.getDayId()).get());
         doc.setContent(request.getContent());
+        doc.setPIN(request.getPin());
+        doc.setSigned(request.getSigned());
         doc.setEvents(
             eventRepo.findAll().stream()
                 .filter(e -> request.getEventIds().contains(e.getId()))
@@ -151,6 +196,8 @@ public class DocController {
             request.getContent(),
             roleRepo.findById(request.getRoleId()).get(),
             dayRepo.findById(request.getDayId()).get(),
+            request.getPin(),
+            request.getSigned(),
             eventRepo.findAll().stream()
                     .filter(e -> request.getEventIds().contains(e.getId()))
                     .collect(Collectors.toSet())

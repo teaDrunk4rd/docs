@@ -165,4 +165,10 @@ public class User {
     public String getFullName() {
         return this.getLastName() + " " + this.getFirstName();
     }
+
+    public Boolean canSignDoc(Doc doc) {
+        return this.getPIN() != null && !this.getPIN().equals("") &&
+                doc.getPIN() != null && !doc.getPIN().equals("") &&
+                this.getPIN().equals(doc.getPIN());
+    }
 }

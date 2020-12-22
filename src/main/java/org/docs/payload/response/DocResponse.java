@@ -8,15 +8,19 @@ public class DocResponse {
     private Day day;
     private String content;
     private Role role;
+    private Boolean isSigned;
+    private String pin;
 
     public DocResponse() {
     }
 
-    public DocResponse(String name, Day day, String content, Role role) {
+    public DocResponse(String name, Day day, String content, Role role, Boolean isSigned, String pin) {
         this.name = name;
         this.day = day;
         this.content = content;
         this.role = role;
+        this.isSigned = isSigned;
+        this.pin = pin;
     }
 
     public String getName() {
@@ -49,5 +53,21 @@ public class DocResponse {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Boolean getSigned() {
+        return isSigned;
+    }
+
+    public void setSigned(Boolean signed) {
+        isSigned = signed;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 }

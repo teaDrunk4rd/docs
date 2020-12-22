@@ -57,13 +57,14 @@ public class Doc {
         this.events = events;
     }
 
-    public Doc(String name, String content, Role role, Day day, String PIN, Boolean isSigned) {
+    public Doc(String name, String content, Role role, Day day, String PIN, Boolean isSigned, Set<Event> events) {
         this.name = name;
         this.content = content;
         this.role = role;
         this.day = day;
         this.PIN = PIN;
         this.isSigned = isSigned;
+        this.events = events;
     }
 
     public Integer getId() {

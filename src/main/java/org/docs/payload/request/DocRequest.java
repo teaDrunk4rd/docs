@@ -14,17 +14,21 @@ public class DocRequest {
     private Integer dayId;
     @NotBlank(message = "Заполните содержание")
     private String content;
+    private String pin;
+    private boolean isSigned;
     private List<Integer> eventIds;
 
     public DocRequest() {
     }
 
-    public DocRequest(Integer id, @NotBlank(message = "Заполните наименование") String name, @NotNull(message = "Заполните роль") Integer roleId, @NotNull(message = "Заполните день") Integer dayId, @NotBlank(message = "Заполните содержание") String content, List<Integer> eventIds) {
+    public DocRequest(Integer id, @NotBlank(message = "Заполните наименование") String name, @NotNull(message = "Заполните роль") Integer roleId, @NotNull(message = "Заполните день") Integer dayId, @NotBlank(message = "Заполните содержание") String content, String pin, boolean isConfirmed, List<Integer> eventIds) {
         this.id = id;
         this.name = name;
         this.roleId = roleId;
         this.dayId = dayId;
         this.content = content;
+        this.pin = pin;
+        this.isSigned = isConfirmed;
         this.eventIds = eventIds;
     }
 
@@ -74,5 +78,21 @@ public class DocRequest {
 
     public void setEventIds(List<Integer> eventIds) {
         this.eventIds = eventIds;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
+
+    public boolean getSigned() {
+        return isSigned;
+    }
+
+    public void setSigned(boolean signed) {
+        isSigned = signed;
     }
 }

@@ -14,6 +14,8 @@ interface DocFormState {
     day: any,
     content: string,
     role: any,
+    PIN: string,
+    signed?: boolean,
     days: Array<any>,
     roles: Array<any>,
     isLoaded: boolean
@@ -31,6 +33,8 @@ export default class DocForm extends Component<any, DocFormState> {
             day: null,
             content: '',
             role: null,
+            PIN: '',
+            signed: undefined,
             days: [],
             roles: [],
             isLoaded: false
@@ -48,6 +52,8 @@ export default class DocForm extends Component<any, DocFormState> {
                         day: response.data.day,
                         content: response.data.content,
                         role: response.data.role,
+                        PIN: response.data.pin,
+                        signed: response.data.signed,
                     });
             });
 
@@ -79,6 +85,8 @@ export default class DocForm extends Component<any, DocFormState> {
                 dayId: this.state.day.id,
                 content: this.state.content,
                 roleId: this.state.role.id,
+                pin: this.state.PIN,
+                signed: this.state.signed,
                 eventIds: this.DocEvents.current?.state.events.map(p => p['id'])
             }).then(response => {
                 if (response.status === 200) {
@@ -97,6 +105,8 @@ export default class DocForm extends Component<any, DocFormState> {
                 dayId: this.state.day.id,
                 content: this.state.content,
                 roleId: this.state.role.id,
+                pin: this.state.PIN,
+                signed: this.state.signed,
                 eventIds: this.DocEvents.current?.state.events.map(p => p['id'])
             }).then(response => {
                 if (response.status === 200) {
@@ -112,7 +122,7 @@ export default class DocForm extends Component<any, DocFormState> {
     }
 
     render() {
-        const {id, name, day, content, role, days, roles} = this.state;
+        const {id, name, day, content, role, PIN, signed, days, roles} = this.state;
         return (
             <div className="col-8 m-auto">
                 <div className="card text-center">
@@ -134,7 +144,8 @@ export default class DocForm extends Component<any, DocFormState> {
 
                             <div className="row mb-2">
                                 <label className="offset-md-2 col-md-3 col-form-label text-left">Роль</label>
-                                <label className="offset-md-2 col-md-3 col-form-label text-left">День</label>
+                                <label className="col-md-2 col-form-label text-left">День</label>
+                                <label className="col-md-3 col-form-label text-left">PIN</label>
 
                                 <div className="offset-md-2 col-md-3 mt-1">
                                     <FormControl variant="outlined" className="w-100">
@@ -153,7 +164,7 @@ export default class DocForm extends Component<any, DocFormState> {
                                         </Select>
                                     </FormControl>
                                 </div>
-                                <div className="offset-md-2 col-md-3 mt-1">
+                                <div className="col-md-2 mt-1">
                                     <FormControl variant="outlined" className="w-100">
                                         <Select value={day?.id || 0}
                                                 onChange={event => {
@@ -170,6 +181,13 @@ export default class DocForm extends Component<any, DocFormState> {
                                         </Select>
                                     </FormControl>
                                 </div>
+                                <div className="col-md-3 mt-1">
+                                    <input type="text"
+                                           autoComplete="false"
+                                           value={PIN}
+                                           onChange={event => this.setState({PIN: event.target.value})}
+                                           className="form-control"/>
+                                </div>
                             </div>
 
                             <div className="row mb-2">
@@ -180,6 +198,19 @@ export default class DocForm extends Component<any, DocFormState> {
                                         value={content}
                                         onChange={event => this.setState({content: event.target.value})}
                                         className="form-control"/>
+                                </div>
+                            </div>
+
+                            <div className="row mb-2">
+                                <div className="offset-md-2 col-md-4 mt-1 d-flex align-items-center">
+                                    <input type="checkbox"
+                                           autoComplete="false"
+                                           checked={signed}
+                                           onChange={() => this.setState({signed: !signed})}/>
+                                    <label className="col-form-label text-left py-0 pl-1"
+                                           onClick={() => this.setState({signed: !signed})}>
+                                        Подписанный документ
+                                    </label>
                                 </div>
                             </div>
 

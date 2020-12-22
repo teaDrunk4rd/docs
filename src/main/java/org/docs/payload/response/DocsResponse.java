@@ -5,15 +5,17 @@ public class DocsResponse {
     private String doc;
     private String day;
     private String role;
+    private Boolean isSigned;
 
     public DocsResponse() {
     }
 
-    public DocsResponse(Integer id, String doc, String day, String role) {
+    public DocsResponse(Integer id, String doc, String day, String role, Boolean isSigned) {
         this.id = id;
         this.doc = doc;
         this.day = day;
         this.role = role;
+        this.isSigned = isSigned;
     }
 
     public Integer getId() {
@@ -46,5 +48,13 @@ public class DocsResponse {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Boolean getSigned() {
+        return isSigned;
+    }
+
+    public void setSigned(Boolean signed) {
+        isSigned = signed;
     }
 }
