@@ -5,9 +5,9 @@ import org.docs.db.entities.User;
 import org.docs.db.repos.EventRepo;
 import org.docs.db.repos.RoleRepo;
 import org.docs.db.repos.UserRepo;
+import org.docs.payload.request.IdsRequest;
 import org.docs.payload.request.UpdateProfileRequest;
 import org.docs.payload.request.UpdateUserRequest;
-import org.docs.payload.request.UserFreeEventsRequest;
 import org.docs.payload.response.*;
 import org.docs.security.JwtUtils;
 import org.docs.security.UserDetailsGetter;
@@ -39,12 +39,12 @@ public class UserController {
     @Autowired
     private PasswordEncoder encoder;
 
-    @GetMapping("profiles")
+    @GetMapping("profile")
     public User showProfile() {
         return userRepo.findById(userDetailsGetter.getUserDetails().getId()).orElse(null);
     }
 
-    @PutMapping("profiles/update")
+    @PutMapping("profile/update")
     public ResponseEntity<?> updateProfile(@Valid @RequestBody UpdateProfileRequest updateUserRequest) {
         User user = userRepo.findById(userDetailsGetter.getUserDetails().getId()).orElse(null);
 
@@ -65,7 +65,8 @@ public class UserController {
             user.getId(),
             user.getFirstName(),
             user.getEmail(),
-            null));
+            null
+        ));
     }
 
     @Secured("ROLE_ADMIN")
@@ -122,10 +123,10 @@ public class UserController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/users/user/freeEvents")
-    public ResponseEntity<?> getUserFreeEvents(@RequestBody UserFreeEventsRequest request) {
+    public ResponseEntity<?> getUserFreeEvents(@RequestBody IdsRequest request) {
         return ResponseEntity.ok(
             eventRepo.findAll().stream()
-                .filter(e -> !request.getEventIds().contains(e.getId()))
+                .filter(e -> !request.getIds().contains(e.getId()))
                 .sorted(Comparator.comparing(Event::getName))
                 .map(e -> new EventsResponse(e.getId(), e.getName(), e.getDates(), e.getUsers().size()))
         );

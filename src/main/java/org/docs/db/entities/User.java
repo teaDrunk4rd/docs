@@ -38,6 +38,7 @@ public class User {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean isConfirmed = false;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "AvatarId", nullable = true)
     private File avatar;
@@ -46,6 +47,7 @@ public class User {
     @JoinColumn(name = "RoleId", nullable = false)
     private Role role;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "users")
     private Set<Event> events;
 

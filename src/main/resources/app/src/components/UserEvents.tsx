@@ -100,7 +100,7 @@ export default class UserEvents extends Component<UserEventsProps, UserEventsSta
                         </Button>
                         <Button onClick={() => {
                             events.splice(events.indexOf(selectedEvent), 1);
-                            this.setState({openDeleteDialog: false});
+                            this.setState({selectedEvent: null, openDeleteDialog: false});
                         }} color="secondary">
                             Удалить
                         </Button>

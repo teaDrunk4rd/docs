@@ -40,7 +40,7 @@ export default class Profile extends Component<any, ProfileState> {
     }
 
     componentDidMount() {
-        axios.get('profiles').then(response => {
+        axios.get('profile').then(response => {
             if (response.status === 200) {
                 this.setState({
                     email: response.data.email,
@@ -57,7 +57,7 @@ export default class Profile extends Component<any, ProfileState> {
     handleSubmit(event: any) {
         event.preventDefault();
 
-        axios.put('profiles/update', {
+        axios.put('profile/update', {
             email: this.state.email,
             firstName: this.state.firstName,
             lastName: this.state.lastName,
@@ -161,7 +161,7 @@ export default class Profile extends Component<any, ProfileState> {
                                 <div className="col-md-6">
                                     <input type="text"
                                            autoComplete="false"
-                                           value={country}
+                                           value={country || ''}
                                            onChange={event => this.setState({country: event.target.value})}
                                            className="form-control"/>
                                 </div>

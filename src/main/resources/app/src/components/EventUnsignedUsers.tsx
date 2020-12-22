@@ -23,7 +23,7 @@ export default class EventUnsignedUsers extends Component<UnsignedUsersProps, Un
 
     componentDidMount() {
         axios.post('events/event/users', {
-            participantIds: this.props.participants.map(p => p['id'])
+            ids: this.props.participants.map(p => p['id'])
         }).then(response => {
             if (response.status === 200)
                 this.setState({

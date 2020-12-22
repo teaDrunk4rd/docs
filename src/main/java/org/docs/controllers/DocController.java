@@ -5,7 +5,7 @@ import org.docs.db.entities.Doc;
 import org.docs.db.entities.Event;
 import org.docs.db.entities.User;
 import org.docs.db.repos.*;
-import org.docs.payload.request.DocFreeEventsRequest;
+import org.docs.payload.request.IdsRequest;
 import org.docs.payload.request.DocRequest;
 import org.docs.payload.response.*;
 import org.docs.security.UserDetailsGetter;
@@ -157,10 +157,10 @@ public class DocController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/docs/doc/freeEvents")
-    public ResponseEntity<?> getDocFreeEvents(@RequestBody DocFreeEventsRequest request) {
+    public ResponseEntity<?> getDocFreeEvents(@RequestBody IdsRequest request) {
         return ResponseEntity.ok(
             eventRepo.findAll().stream()
-                .filter(e -> !request.getEventIds().contains(e.getId()))
+                .filter(e -> !request.getIds().contains(e.getId()))
                 .sorted(Comparator.comparing(Event::getName))
                 .map(e -> new EventsResponse(e.getId(), e.getName(), e.getDates(), e.getUsers().size()))
         );

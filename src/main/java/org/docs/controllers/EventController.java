@@ -6,8 +6,7 @@ import org.docs.db.entities.Event;
 import org.docs.db.entities.EventDay;
 import org.docs.db.entities.User;
 import org.docs.db.repos.*;
-import org.docs.payload.request.EventFreeDocsRequest;
-import org.docs.payload.request.UnsignedUsersRequest;
+import org.docs.payload.request.IdsRequest;
 import org.docs.payload.request.EventRequest;
 import org.docs.payload.response.DocsResponse;
 import org.docs.payload.response.EventResponse;
@@ -96,10 +95,10 @@ public class EventController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/events/event/users")
-    public ResponseEntity<?> getUnsignedUsers(@RequestBody UnsignedUsersRequest request) {
+    public ResponseEntity<?> getUnsignedUsers(@RequestBody IdsRequest request) {
         return ResponseEntity.ok(
             userRepo.findAll().stream()
-                .filter(u -> !request.getParticipantIds().contains(u.getId()) && u.getRole().getERole() != ERole.ROLE_ADMIN)
+                .filter(u -> !request.getIds().contains(u.getId()) && u.getRole().getERole() != ERole.ROLE_ADMIN)
                 .map(u -> new EventUserResponse(u.getId(), u.getFullName(), u.getRole().getName()))
         );
     }
@@ -134,10 +133,10 @@ public class EventController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/events/event/freeDocs")
-    public ResponseEntity<?> getFreeDocs(@RequestBody EventFreeDocsRequest request) {
+    public ResponseEntity<?> getFreeDocs(@RequestBody IdsRequest request) {
         return ResponseEntity.ok(
             docRepo.findAll().stream()
-                .filter(e -> !request.getDocIds().contains(e.getId()))
+                .filter(e -> !request.getIds().contains(e.getId()))
                 .sorted(Comparator.comparing(Doc::getName))
                 .map(d -> new DocsResponse(
                         d.getId(),

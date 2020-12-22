@@ -23,7 +23,7 @@ export default class UserFreeEvents extends Component<UserFreeEventsProps, UserF
 
     componentDidMount() {
         axios.post('users/user/freeEvents', {
-            eventIds: this.props.userEvents.map(p => p['id'])
+            ids: this.props.userEvents.map(p => p['id'])
         }).then(response => {
             if (response.status === 200)
                 this.setState({

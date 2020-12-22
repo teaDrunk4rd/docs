@@ -23,7 +23,7 @@ export default class DocFreeEvents extends Component<DocFreeEventsProps, DocFree
 
     componentDidMount() {
         axios.post('docs/doc/freeEvents', {
-            eventIds: this.props.docEvents.map(p => p['id'])
+            ids: this.props.docEvents.map(p => p['id'])
         }).then(response => {
             if (response.status === 200)
                 this.setState({
