@@ -38,11 +38,6 @@ public class User {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean isConfirmed = false;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "AvatarId", nullable = true)
-    private File avatar;
-
     @ManyToOne
     @JoinColumn(name = "RoleId", nullable = false)
     private Role role;
@@ -59,20 +54,6 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.role = role;
-    }
-
-    public User(String firstName, String lastName, String email, String password, String PIN, Boolean isConfirmed,
-                Role role, File avatar, String country, String about) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.country = country;
-        this.about = about;
-        this.PIN = PIN;
-        this.isConfirmed = isConfirmed;
-        this.avatar = avatar;
         this.role = role;
     }
 
@@ -146,14 +127,6 @@ public class User {
 
     public void setConfirmed(Boolean confirmed) {
         isConfirmed = confirmed;
-    }
-
-    public File getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(File avatar) {
-        this.avatar = avatar;
     }
 
     public Role getRole() {

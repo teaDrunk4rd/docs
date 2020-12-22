@@ -15,10 +15,6 @@ public class Event {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "AvatarId", nullable = true)
-    private File avatar;
-
     @ManyToMany(mappedBy = "events")
     private Set<Doc> docs;
 
@@ -98,14 +94,6 @@ public class Event {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public File getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(File avatar) {
-        this.avatar = avatar;
     }
     
     public Date getEventDay(String key) {
