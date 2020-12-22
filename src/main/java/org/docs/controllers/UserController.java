@@ -1,10 +1,13 @@
 package org.docs.controllers;
 
+import org.docs.db.entities.Event;
 import org.docs.db.entities.User;
+import org.docs.db.repos.EventRepo;
 import org.docs.db.repos.RoleRepo;
 import org.docs.db.repos.UserRepo;
 import org.docs.payload.request.UpdateProfileRequest;
 import org.docs.payload.request.UpdateUserRequest;
+import org.docs.payload.request.UserFreeEventsRequest;
 import org.docs.payload.response.*;
 import org.docs.security.JwtUtils;
 import org.docs.security.UserDetailsGetter;
@@ -15,7 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -23,6 +28,8 @@ import java.util.Comparator;
 public class UserController {
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private EventRepo eventRepo;
     @Autowired
     private RoleRepo roleRepo;
     @Autowired
@@ -101,6 +108,30 @@ public class UserController {
     }
 
     @Secured("ROLE_ADMIN")
+    @GetMapping("/users/user/events")
+    public ResponseEntity<?> getUserEvents(@RequestParam int id) {
+        User user = userRepo.findById(id).orElse(null);
+        if (user == null) return ResponseEntity.badRequest().build();
+
+        return ResponseEntity.ok(
+            user.getEvents().stream()
+                .sorted(Comparator.comparing(Event::getName))
+                .map(e -> new EventsResponse(e.getId(), e.getName(), e.getDates(), e.getUsers().size()))
+        );
+    }
+
+    @Secured("ROLE_ADMIN")
+    @PostMapping("/users/user/freeEvents")
+    public ResponseEntity<?> getUserFreeEvents(@RequestBody UserFreeEventsRequest request) {
+        return ResponseEntity.ok(
+            eventRepo.findAll().stream()
+                .filter(e -> !request.getEventIds().contains(e.getId()))
+                .sorted(Comparator.comparing(Event::getName))
+                .map(e -> new EventsResponse(e.getId(), e.getName(), e.getDates(), e.getUsers().size()))
+        );
+    }
+
+    @Secured("ROLE_ADMIN")
     @PutMapping("/users/user/update")
     public ResponseEntity<?> update(@Valid @RequestBody UpdateUserRequest request) {
         User user = userRepo.findById(request.getId()).orElse(null);
@@ -118,6 +149,20 @@ public class UserController {
         user.setPIN(request.getPin());
         user.setConfirmed(request.getConfirmed());
         userRepo.saveAndFlush(user);
+
+        for (Event event : eventRepo.findAllById(user.getEvents().stream()
+                .filter(e -> !request.getEventIds().contains(e.getId()))
+                .map(Event::getId)
+                .collect(Collectors.toList()))) {
+            event.getUsers().remove(user);
+            eventRepo.saveAndFlush(event);
+        }
+        for (Event event: eventRepo.findAllById(request.getEventIds().stream()
+                .filter(id -> user.getEvents().stream().noneMatch(d-> d.getId().equals(id)))
+                .collect(Collectors.toList()))) {
+            event.getUsers().add(user);
+            eventRepo.saveAndFlush(event);
+        }
 
         return ResponseEntity.ok(200);
     }

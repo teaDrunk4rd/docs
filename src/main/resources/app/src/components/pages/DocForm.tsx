@@ -87,7 +87,7 @@ export default class DocForm extends Component<any, DocFormState> {
                 roleId: this.state.role.id,
                 pin: this.state.PIN,
                 signed: this.state.signed,
-                eventIds: this.DocEvents.current?.state.events.map(p => p['id'])
+                eventIds: this.DocEvents.current?.state.events.map(e => e['id'])
             }).then(response => {
                 if (response.status === 200) {
                     store.addNotification({
@@ -107,7 +107,7 @@ export default class DocForm extends Component<any, DocFormState> {
                 roleId: this.state.role.id,
                 pin: this.state.PIN,
                 signed: this.state.signed,
-                eventIds: this.DocEvents.current?.state.events.map(p => p['id'])
+                eventIds: this.DocEvents.current?.state.events.map(e => e['id'])
             }).then(response => {
                 if (response.status === 200) {
                     store.addNotification({

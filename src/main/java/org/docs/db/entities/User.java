@@ -47,7 +47,7 @@ public class User {
     private Role role;
 
     @ManyToMany(mappedBy = "users")
-    Set<Event> events;
+    private Set<Event> events;
 
     public User() {
     }
@@ -160,6 +160,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
     }
 
     public String getFullName() {

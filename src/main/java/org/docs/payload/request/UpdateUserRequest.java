@@ -7,6 +7,7 @@ import org.docs.db.repos.UserRepo;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class UpdateUserRequest {
     private Integer id;
@@ -23,11 +24,12 @@ public class UpdateUserRequest {
     private String about;
     private String pin;
     private boolean isConfirmed;
+    private List<Integer> eventIds;
 
     public UpdateUserRequest() {
     }
 
-    public UpdateUserRequest(Integer id, @NotBlank(message = "Заполните email") @Email(message = "Неверно введён email") String email, @NotBlank(message = "Заполните имя") String firstName, @NotBlank(message = "Заполните фамилию") String lastName, @NotNull(message = "Заполните роль") Integer roleId, String country, String about, String PIN, boolean isConfirmed) {
+    public UpdateUserRequest(Integer id, @NotBlank(message = "Заполните email") @Email(message = "Неверно введён email") String email, @NotBlank(message = "Заполните имя") String firstName, @NotBlank(message = "Заполните фамилию") String lastName, @NotNull(message = "Заполните роль") Integer roleId, String country, String about, String pin, boolean isConfirmed, List<Integer> eventIds) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -35,8 +37,9 @@ public class UpdateUserRequest {
         this.roleId = roleId;
         this.country = country;
         this.about = about;
-        this.pin = PIN;
+        this.pin = pin;
         this.isConfirmed = isConfirmed;
+        this.eventIds = eventIds;
     }
 
     public Integer getId() {
@@ -109,6 +112,14 @@ public class UpdateUserRequest {
 
     public void setConfirmed(boolean confirmed) {
         isConfirmed = confirmed;
+    }
+
+    public List<Integer> getEventIds() {
+        return eventIds;
+    }
+
+    public void setEventIds(List<Integer> eventIds) {
+        this.eventIds = eventIds;
     }
 
     public String validate(UserRepo userRepo, RoleRepo roleRepo, User user) {

@@ -5,6 +5,8 @@ import {store} from "react-notifications-component";
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import UserEvents from "../UserEvents";
+import DocEvents from "../DocEvents";
 
 interface UserFormState {
     id: number,
@@ -24,6 +26,8 @@ interface UserFormState {
 }
 
 export default class UserForm extends Component<any, UserFormState> {
+    private readonly UserEvents: React.RefObject<UserEvents>;
+
     constructor(props: any) {
         super(props);
 
@@ -40,6 +44,9 @@ export default class UserForm extends Component<any, UserFormState> {
             roles: [],
             isLoaded: false
         };
+
+        this.UserEvents = React.createRef();
+
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -81,7 +88,8 @@ export default class UserForm extends Component<any, UserFormState> {
             country: this.state.country,
             about: this.state.about,
             pin: this.state.PIN,
-            confirmed: this.state.confirmed
+            confirmed: this.state.confirmed,
+            eventIds: this.UserEvents.current?.state.events.map(e => e['id'])
         }).then(response => {
             if (response.status === 200) {
                 store.addNotification({
@@ -98,34 +106,34 @@ export default class UserForm extends Component<any, UserFormState> {
     }
 
     render() {
-        const {email, firstName, lastName, roleId, country, PIN, about, confirmed, roles} = this.state;
+        const {id, email, firstName, lastName, roleId, country, PIN, about, confirmed, roles} = this.state;
         return (
-            <div className="col-10 m-auto">
+            <div className="col-8 m-auto">
                 <div className="card text-center">
                     {!this.state.isLoaded ? <Preloader className='event-loader' /> : <div/>}
                     <div className="card-header">Пользователь</div>
                     <div className="card-body">
                         <form onSubmit={this.handleSubmit} autoComplete='false'>
                             <div className="row mb-2">
-                                <label className="offset-md-2 col-md-3 col-form-label text-left">Email</label>
-                                <label className="col-md-3 col-form-label text-left">Фамилия</label>
-                                <label className="col-md-2 col-form-label text-left">Имя</label>
+                                <label className="offset-md-1 col-md-3 col-form-label text-left">Email</label>
+                                <label className="col-md-4 col-form-label text-left">Фамилия</label>
+                                <label className="col-md-3 col-form-label text-left">Имя</label>
 
-                                <div className="offset-md-2 col-md-3 mt-1">
+                                <div className="offset-md-1 col-md-3 mt-1">
                                     <input type="text"
                                            autoComplete="false"
                                            value={email}
                                            onChange={event => this.setState({email: event.target.value})}
                                            className="form-control"/>
                                 </div>
-                                <div className="col-md-3 mt-1">
+                                <div className="col-md-4 mt-1">
                                     <input type="text"
                                            autoComplete="false"
                                            value={lastName}
                                            onChange={event => this.setState({lastName: event.target.value})}
                                            className="form-control"/>
                                 </div>
-                                <div className="col-md-2 mt-1">
+                                <div className="col-md-3 mt-1">
                                     <input type="text"
                                            autoComplete="false"
                                            value={firstName}
@@ -135,11 +143,11 @@ export default class UserForm extends Component<any, UserFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <label className="offset-md-2 col-md-2 col-form-label text-left">Роль</label>
-                                <label className="col-md-3 col-form-label text-left">Страна</label>
-                                <label className="col-md-3 col-form-label text-left">PIN</label>
+                                <label className="offset-md-1 col-md-2 col-form-label text-left">Роль</label>
+                                <label className="col-md-4 col-form-label text-left">Страна</label>
+                                <label className="col-md-4 col-form-label text-left">PIN</label>
 
-                                <div className="offset-md-2 col-md-2 mt-1">
+                                <div className="offset-md-1 col-md-2 mt-1">
                                     <FormControl variant="outlined" className="w-100">
                                         <Select labelId="demo-simple-select-outlined-label"
                                                 id="demo-simple-select-outlined"
@@ -152,14 +160,14 @@ export default class UserForm extends Component<any, UserFormState> {
                                         </Select>
                                     </FormControl>
                                 </div>
-                                <div className="col-md-3 mt-1">
+                                <div className="col-md-4 mt-1">
                                     <input type="text"
                                            autoComplete="false"
                                            value={country}
                                            onChange={event => this.setState({country: event.target.value})}
                                            className="form-control"/>
                                 </div>
-                                <div className="col-md-3 mt-1">
+                                <div className="col-md-4 mt-1">
                                     <input type="text"
                                            autoComplete="false"
                                            value={PIN}
@@ -169,9 +177,9 @@ export default class UserForm extends Component<any, UserFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <label className="offset-md-2 col-md-8 col-form-label text-left">Про пользователя</label>
+                                <label className="offset-md-1 col-md-10 col-form-label text-left">Про пользователя</label>
 
-                                <div className="offset-md-2 col-md-8 mt-1">
+                                <div className="offset-md-1 col-md-10 mt-1">
                                     <textarea
                                         value={about || ''}
                                         onChange={event => this.setState({about: event.target.value})}
@@ -180,7 +188,7 @@ export default class UserForm extends Component<any, UserFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <div className="offset-md-2 col-md-4 mt-1 d-flex align-items-center">
+                                <div className="offset-md-1 col-md-4 mt-1 d-flex align-items-center">
                                     <input type="checkbox"
                                            autoComplete="false"
                                            checked={confirmed}
@@ -192,8 +200,13 @@ export default class UserForm extends Component<any, UserFormState> {
                                 </div>
                             </div>
 
+                            <div className="row mb-2">
+                                <div className="offset-md-2 col-md-10 text-left">События</div>
+                                <UserEvents ref={this.UserEvents} userId={id}/>
+                            </div>
+
                             <div className="row">
-                                <div className="col-md-7 offset-md-3 d-flex justify-content-end">
+                                <div className="offset-md-1 col-md-10 d-flex justify-content-end">
                                     <button type="submit" className="btn btn-success">
                                         Сохранить
                                     </button>

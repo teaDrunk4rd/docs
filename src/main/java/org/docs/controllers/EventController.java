@@ -174,8 +174,16 @@ public class EventController {
             new EventDay(event, dayRepo.findByKey("c+2"), request.getFinishDate())
         ));
 
-        docRepo.deleteByEvents(Arrays.asList(event));
-        for (Doc doc: docRepo.findAllById(request.getDocIds())) {
+        for (Doc doc : docRepo.findAllById(event.getDocs().stream()
+                .filter(d -> !request.getDocIds().contains(d.getId()))
+                .map(Doc::getId)
+                .collect(Collectors.toList()))) {
+            doc.getEvents().remove(event);
+            docRepo.saveAndFlush(doc);
+        }
+        for (Doc doc : docRepo.findAllById(request.getDocIds().stream()
+                .filter(id -> event.getDocs().stream().noneMatch(d-> d.getId().equals(id)))
+                .collect(Collectors.toList()))) {
             doc.getEvents().add(event);
             docRepo.saveAndFlush(doc);
         }
