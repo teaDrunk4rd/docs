@@ -2,9 +2,17 @@ import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
 import {store} from "react-notifications-component";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 
 interface UsersState {
     users: Array<any>,
+    openDeleteDialog: boolean,
+    deleteEventId?: number,
     isLoaded: boolean
 }
 
@@ -13,6 +21,8 @@ export default class Users extends Component<any, UsersState> {
         super(props);
         this.state = {
             users: [],
+            openDeleteDialog: false,
+            deleteEventId: undefined,
             isLoaded: false
         };
     }
@@ -28,7 +38,7 @@ export default class Users extends Component<any, UsersState> {
         });
     }
 
-    delete(id: number) {
+    delete(id: number|undefined) {
         axios.delete(`users/user/delete?id=${id}`).then(response => {
             if (response.status === 200) {
                 store.addNotification({
@@ -41,7 +51,10 @@ export default class Users extends Component<any, UsersState> {
                 this.state.users.splice(this.state.users.indexOf(this.state.users.find(function (u) {
                     return u.id === id;
                 })), 1);
-                this.forceUpdate();
+                this.setState({
+                    openDeleteDialog: false,
+                    deleteEventId: undefined
+                });
             }
         })
     }
@@ -87,7 +100,10 @@ export default class Users extends Component<any, UsersState> {
                                             <div className="trash-icon shadow-sm ml-4"
                                                  onClick={(e) => {
                                                      e.stopPropagation();
-                                                     this.delete(user.id);
+                                                     this.setState({
+                                                         openDeleteDialog: true,
+                                                         deleteEventId: user.id
+                                                     });
                                                  }}/>
                                         ) : <div/>
                                     }
@@ -97,6 +113,28 @@ export default class Users extends Component<any, UsersState> {
                     })}
                     </tbody>
                 </table>
+
+                <Dialog
+                    open={this.state.openDeleteDialog}
+                    onClose={() => this.setState({openDeleteDialog: false, deleteEventId: undefined})}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description">
+                    <DialogTitle id="alert-dialog-title">Подтверждение удаления</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Вы действительно хотите удалить пользователя?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.setState({openDeleteDialog: false, deleteEventId: undefined})}
+                                color="default">
+                            Отмена
+                        </Button>
+                        <Button onClick={() => this.delete(this.state.deleteEventId)} color="secondary">
+                            Удалить
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         )
     };

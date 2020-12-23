@@ -2,9 +2,17 @@ import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
 import {store} from "react-notifications-component";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 
 interface DocsState {
     docs: Array<any>,
+    openDeleteDialog: boolean,
+    deleteEventId?: number,
     isLoaded: boolean
 }
 
@@ -13,6 +21,8 @@ export default class Docs extends Component<any, DocsState> {
         super(props);
         this.state = {
             docs: [],
+            openDeleteDialog: false,
+            deleteEventId: undefined,
             isLoaded: false
         };
     }
@@ -28,7 +38,7 @@ export default class Docs extends Component<any, DocsState> {
         });
     }
 
-    delete(id: number) {
+    delete(id: number|undefined) {
         axios.delete(`docs/doc/delete?id=${id}`).then(response => {
             if (response.status === 200) {
                 store.addNotification({
@@ -41,7 +51,10 @@ export default class Docs extends Component<any, DocsState> {
                 this.state.docs.splice(this.state.docs.indexOf(this.state.docs.find(function (d) {
                     return d.id === id;
                 })), 1);
-                this.forceUpdate();
+                this.setState({
+                    openDeleteDialog: false,
+                    deleteEventId: undefined
+                });
             }
         })
     }
@@ -93,7 +106,10 @@ export default class Docs extends Component<any, DocsState> {
                                     <div className="trash-icon shadow-sm ml-4"
                                          onClick={(e) => {
                                              e.stopPropagation();
-                                             this.delete(doc.id);
+                                             this.setState({
+                                                 openDeleteDialog: true,
+                                                 deleteEventId: doc.id
+                                             });
                                          }}/>
                                 </td>
                             </tr>
@@ -101,6 +117,28 @@ export default class Docs extends Component<any, DocsState> {
                     })}
                     </tbody>
                 </table>
+
+                <Dialog
+                    open={this.state.openDeleteDialog}
+                    onClose={() => this.setState({openDeleteDialog: false, deleteEventId: undefined})}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description">
+                    <DialogTitle id="alert-dialog-title">Подтверждение удаления</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Вы действительно хотите удалить документ?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.setState({openDeleteDialog: false, deleteEventId: undefined})}
+                                color="default">
+                            Отмена
+                        </Button>
+                        <Button onClick={() => this.delete(this.state.deleteEventId)} color="secondary">
+                            Удалить
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         )
     };

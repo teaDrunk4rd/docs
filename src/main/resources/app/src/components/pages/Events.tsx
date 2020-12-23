@@ -2,9 +2,17 @@ import React, {Component} from "react";
 import axios from "axios";
 import Preloader from "../Preloader";
 import {store} from "react-notifications-component";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 
 interface EventsState {
     events: Array<any>,
+    openDeleteDialog: boolean,
+    deleteEventId?: number,
     isLoaded: boolean
 }
 
@@ -13,6 +21,8 @@ export default class Events extends Component<any, EventsState> {
         super(props);
         this.state = {
             events: [],
+            openDeleteDialog: false,
+            deleteEventId: undefined,
             isLoaded: false
         };
     }
@@ -28,7 +38,7 @@ export default class Events extends Component<any, EventsState> {
         });
     }
 
-    delete(id: number) {
+    delete(id: number|undefined) {
         axios.delete(`events/event/delete?id=${id}`).then(response => {
             if (response.status === 200) {
                 store.addNotification({
@@ -41,7 +51,10 @@ export default class Events extends Component<any, EventsState> {
                 this.state.events.splice(this.state.events.indexOf(this.state.events.find(function (e) {
                     return e.id === id;
                 })), 1);
-                this.forceUpdate();
+                this.setState({
+                    openDeleteDialog: false,
+                    deleteEventId: undefined
+                });
             }
         })
     }
@@ -89,7 +102,10 @@ export default class Events extends Component<any, EventsState> {
                                     <div className="trash-icon shadow-sm ml-4"
                                          onClick={(e) => {
                                              e.stopPropagation();
-                                             this.delete(event.id);
+                                             this.setState({
+                                                 openDeleteDialog: true,
+                                                 deleteEventId: event.id
+                                             });
                                          }}/>
                                 </td>
                             </tr>
@@ -97,6 +113,28 @@ export default class Events extends Component<any, EventsState> {
                     })}
                     </tbody>
                 </table>
+
+                <Dialog
+                    open={this.state.openDeleteDialog}
+                    onClose={() => this.setState({openDeleteDialog: false, deleteEventId: undefined})}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description">
+                    <DialogTitle id="alert-dialog-title">Подтверждение удаления</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Вы действительно хотите удалить событие?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.setState({openDeleteDialog: false, deleteEventId: undefined})}
+                                color="default">
+                            Отмена
+                        </Button>
+                        <Button onClick={() => this.delete(this.state.deleteEventId)} color="secondary">
+                            Удалить
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         )
     };
