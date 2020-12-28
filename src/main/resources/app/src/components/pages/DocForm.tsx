@@ -39,7 +39,9 @@ export default class DocForm extends Component<any, DocFormState> {
             roles: [],
             isLoaded: false
         };
+
         this.DocEvents = React.createRef();
+
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -131,7 +133,7 @@ export default class DocForm extends Component<any, DocFormState> {
                     <div className="card-body">
                         <form onSubmit={this.handleSubmit} autoComplete='false'>
                             <div className="row mb-2">
-                                <label className="offset-md-2 col-md-8 col-form-label text-left">Наименование</label>
+                                <label className="offset-md-2 col-md-8 col-form-label text-start">Наименование</label>
 
                                 <div className="offset-md-2 col-md-8">
                                     <input type="text"
@@ -143,9 +145,9 @@ export default class DocForm extends Component<any, DocFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <label className="offset-md-2 col-md-3 col-form-label text-left">Роль</label>
-                                <label className="col-md-2 col-form-label text-left">День</label>
-                                <label className="col-md-3 col-form-label text-left">PIN</label>
+                                <label className="offset-md-2 col-md-3 col-form-label text-start">Роль</label>
+                                <label className="col-md-2 col-form-label text-start">День</label>
+                                <label className="col-md-3 col-form-label text-start">PIN</label>
 
                                 <div className="offset-md-2 col-md-3 mt-1">
                                     <FormControl variant="outlined" className="w-100">
@@ -157,7 +159,7 @@ export default class DocForm extends Component<any, DocFormState> {
                                                         })
                                                     })
                                                 }}
-                                                className="pt-1 text-left padding-bottom-1px">
+                                                className="pt-1 text-start padding-bottom-1px">
                                             {roles.length !== 0 && roles.map((role, index) => {
                                                 return (<MenuItem key={index} value={role.id}>{role.name}</MenuItem>)
                                             })}
@@ -174,7 +176,7 @@ export default class DocForm extends Component<any, DocFormState> {
                                                         })
                                                     })
                                                 }}
-                                                className="pt-1 text-left padding-bottom-1px">
+                                                className="pt-1 text-start padding-bottom-1px">
                                             {days.length !== 0 && days.map((day, index) => {
                                                 return (<MenuItem key={index} value={day.id}>{day.name}</MenuItem>)
                                             })}
@@ -191,7 +193,7 @@ export default class DocForm extends Component<any, DocFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <label className="offset-md-2 col-md-8 col-form-label text-left">Содержание</label>
+                                <label className="offset-md-2 col-md-8 col-form-label text-start">Содержание</label>
 
                                 <div className="offset-md-2 col-md-8 mt-1">
                                     <textarea
@@ -207,7 +209,7 @@ export default class DocForm extends Component<any, DocFormState> {
                                            autoComplete="false"
                                            checked={signed}
                                            onChange={() => this.setState({signed: !signed})}/>
-                                    <label className="col-form-label text-left py-0 pl-1"
+                                    <label className="col-form-label text-start py-0 ps-1"
                                            onClick={() => this.setState({signed: !signed})}>
                                         Подписанный документ
                                     </label>
@@ -215,7 +217,7 @@ export default class DocForm extends Component<any, DocFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <div className="offset-md-2 col-md-10 text-left">События</div>
+                                <div className="offset-md-2 col-md-10 text-start">События</div>
                                 <DocEvents ref={this.DocEvents} docId={id}/>
                             </div>
 

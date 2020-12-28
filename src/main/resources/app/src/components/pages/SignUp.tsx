@@ -62,7 +62,7 @@ export default class SignUp extends Component<any, RegistrationState> {
                     <div className="card-body">
                         <form onSubmit={this.handleSubmit} autoComplete='false'>
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">E-Mail</label>
+                                <label className="col-md-4 col-form-label text-md-end">E-Mail</label>
                                 <div className="col-md-6">
                                     <input type="text"
                                            autoComplete="false"
@@ -73,7 +73,7 @@ export default class SignUp extends Component<any, RegistrationState> {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">
+                                <label className="col-md-4 col-form-label text-md-end">
                                     Фамилия
                                 </label>
                                 <div className="col-md-6">
@@ -86,7 +86,7 @@ export default class SignUp extends Component<any, RegistrationState> {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">
+                                <label className="col-md-4 col-form-label text-md-end">
                                     Имя
                                 </label>
                                 <div className="col-md-6">
@@ -99,7 +99,7 @@ export default class SignUp extends Component<any, RegistrationState> {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">
+                                <label className="col-md-4 col-form-label text-md-end">
                                     Страна
                                 </label>
                                 <div className="col-md-6">
@@ -112,7 +112,7 @@ export default class SignUp extends Component<any, RegistrationState> {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">Пароль</label>
+                                <label className="col-md-4 col-form-label text-md-end">Пароль</label>
                                 <div className="col-md-6">
                                     <input type="password"
                                            autoComplete="new-password"
@@ -123,7 +123,7 @@ export default class SignUp extends Component<any, RegistrationState> {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">
+                                <label className="col-md-4 col-form-label text-md-end">
                                     Подтверждение пароля
                                 </label>
                                 <div className="col-md-6">

@@ -12,7 +12,7 @@ import Button from "@material-ui/core/Button";
 interface EventsState {
     events: Array<any>,
     openDeleteDialog: boolean,
-    deleteEventId?: number,
+    selectedEventId?: number,
     isLoaded: boolean
 }
 
@@ -22,7 +22,7 @@ export default class Events extends Component<any, EventsState> {
         this.state = {
             events: [],
             openDeleteDialog: false,
-            deleteEventId: undefined,
+            selectedEventId: undefined,
             isLoaded: false
         };
     }
@@ -35,6 +35,14 @@ export default class Events extends Component<any, EventsState> {
                     isLoaded: true
                 })
             }
+        });
+    }
+
+    edit(id: number) {
+        this.props.history.push({
+            pathname: JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" ? "/eventForm" : "/event",
+            search: `?id=${id}`,
+            state: { id: id }
         });
     }
 
@@ -53,7 +61,7 @@ export default class Events extends Component<any, EventsState> {
                 })), 1);
                 this.setState({
                     openDeleteDialog: false,
-                    deleteEventId: undefined
+                    selectedEventId: undefined
                 });
             }
         })
@@ -82,7 +90,7 @@ export default class Events extends Component<any, EventsState> {
                         <th>Событие</th>
                         <th>Даты</th>
                         <th>Участники</th>
-                        <th>Действия</th>
+                        <th/>
                     </tr>
                     </thead>
                     <tbody>
@@ -90,23 +98,32 @@ export default class Events extends Component<any, EventsState> {
                         return (
                             <tr className="cursor-pointer"
                                 key={index}
-                                onClick={() => this.props.history.push({
-                                    pathname: JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" ? "/eventForm" : "/event",
-                                    search: `?id=${event.id}`,
-                                    state: { id: event.id }
-                                })}>
+                                onClick={() => this.edit(event.id)}>
                                 <td>{event.event}</td>
                                 <td>{event.dates}</td>
                                 <td>{event.participantsCount}</td>
-                                <td>
-                                    <div className="trash-icon shadow-sm ml-4"
-                                         onClick={(e) => {
-                                             e.stopPropagation();
-                                             this.setState({
-                                                 openDeleteDialog: true,
-                                                 deleteEventId: event.id
-                                             });
-                                         }}/>
+                                <td onClick={(e) => e.stopPropagation()}>
+                                    <div className="dropdown">
+                                        <div className="dots-icon"
+                                             id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" />
+                                        <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <div className="dropdown-item"
+                                                     onClick={() => this.edit(event.id)}>
+                                                    Редактировать
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div className="dropdown-item"
+                                                     onClick={() => this.setState({
+                                                         openDeleteDialog: true,
+                                                         selectedEventId: event.id
+                                                     })}>
+                                                    Удалить
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         )
@@ -116,7 +133,7 @@ export default class Events extends Component<any, EventsState> {
 
                 <Dialog
                     open={this.state.openDeleteDialog}
-                    onClose={() => this.setState({openDeleteDialog: false, deleteEventId: undefined})}
+                    onClose={() => this.setState({openDeleteDialog: false, selectedEventId: undefined})}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description">
                     <DialogTitle id="alert-dialog-title">Подтверждение удаления</DialogTitle>
@@ -126,11 +143,11 @@ export default class Events extends Component<any, EventsState> {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => this.setState({openDeleteDialog: false, deleteEventId: undefined})}
+                        <Button onClick={() => this.setState({openDeleteDialog: false, selectedEventId: undefined})}
                                 color="default">
                             Отмена
                         </Button>
-                        <Button onClick={() => this.delete(this.state.deleteEventId)} color="secondary">
+                        <Button onClick={() => this.delete(this.state.selectedEventId)} color="secondary">
                             Удалить
                         </Button>
                     </DialogActions>

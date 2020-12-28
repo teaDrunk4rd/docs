@@ -118,7 +118,7 @@ export default class Profile extends Component<any, ProfileState> {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">E-Mail</label>
+                                <label className="col-md-4 col-form-label text-md-end">E-Mail</label>
                                 <div className="col-md-6">
                                     <input type="email"
                                            autoComplete="false"
@@ -129,7 +129,7 @@ export default class Profile extends Component<any, ProfileState> {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">
+                                <label className="col-md-4 col-form-label text-md-end">
                                     Фамилия
                                 </label>
                                 <div className="col-md-6">
@@ -142,7 +142,7 @@ export default class Profile extends Component<any, ProfileState> {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">
+                                <label className="col-md-4 col-form-label text-md-end">
                                     Имя
                                 </label>
                                 <div className="col-md-6">
@@ -155,7 +155,7 @@ export default class Profile extends Component<any, ProfileState> {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">
+                                <label className="col-md-4 col-form-label text-md-end">
                                     Страна
                                 </label>
                                 <div className="col-md-6">
@@ -168,7 +168,7 @@ export default class Profile extends Component<any, ProfileState> {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">
+                                <label className="col-md-4 col-form-label text-md-end">
                                     Про себя
                                 </label>
                                 <div className="col-md-6">
@@ -183,7 +183,7 @@ export default class Profile extends Component<any, ProfileState> {
                                 changePasswordFlag ? (
                                     <div>
                                         <div className="form-group row">
-                                            <label className="col-md-4 col-form-label text-md-right">Старый
+                                            <label className="col-md-4 col-form-label text-md-end">Старый
                                                 пароль</label>
                                             <div className="col-md-6">
                                                 <input type="password"
@@ -195,7 +195,7 @@ export default class Profile extends Component<any, ProfileState> {
                                         </div>
 
                                         < div className="form-group row">
-                                            < label className="col-md-4 col-form-label text-md-right">Новый
+                                            < label className="col-md-4 col-form-label text-md-end">Новый
                                                 пароль</label>
                                             <div className="col-md-6">
                                                 <input type="password"
@@ -207,7 +207,7 @@ export default class Profile extends Component<any, ProfileState> {
                                         </div>
 
                                         <div className="form-group row">
-                                            <label className="col-md-4 col-form-label text-md-right">Подтверждение
+                                            <label className="col-md-4 col-form-label text-md-end">Подтверждение
                                                 пароля</label>
                                             <div className="col-md-6">
                                                 <input type="password"

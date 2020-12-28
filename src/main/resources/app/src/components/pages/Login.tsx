@@ -46,7 +46,7 @@ export default class Login extends Component<any, LoginState> {
                     <div className="card-body">
                         <form onSubmit={this.handleSubmit}>
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">E-Mail</label>
+                                <label className="col-md-4 col-form-label text-md-end">E-Mail</label>
                                 <div className="col-md-6">
                                     <input id="email" type="text" name="email"
                                            value={email}
@@ -57,7 +57,7 @@ export default class Login extends Component<any, LoginState> {
                             </div>
 
                             <div className="form-group row">
-                                <label className="col-md-4 col-form-label text-md-right">Пароль</label>
+                                <label className="col-md-4 col-form-label text-md-end">Пароль</label>
                                 <div className="col-md-6">
                                     <input id="password" type="password" name="password"
                                            value={password}

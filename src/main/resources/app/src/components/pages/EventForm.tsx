@@ -114,7 +114,7 @@ export default class EventForm extends Component<any, EventFormState> {
                     <div className="card-body">
                         <form onSubmit={this.handleSubmit} autoComplete='false'>
                             <div className="row mb-2">
-                                <label className="offset-md-2 col-md-8 col-form-label text-left">Наименование</label>
+                                <label className="offset-md-2 col-md-8 col-form-label text-start">Наименование</label>
 
                                 <div className="offset-md-2 col-md-8">
                                     <input type="text"
@@ -126,8 +126,8 @@ export default class EventForm extends Component<any, EventFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <label className="offset-md-2 col-md-4 col-form-label text-left">Дата начала</label>
-                                <label className="col-md-4 col-form-label text-left">Дата С1</label>
+                                <label className="offset-md-2 col-md-4 col-form-label text-start">Дата начала</label>
+                                <label className="col-md-4 col-form-label text-start">Дата С1</label>
                                 <label className="col-md-2" />
 
                                 <div className="offset-md-2 col-md-4 mt-1">
@@ -155,8 +155,8 @@ export default class EventForm extends Component<any, EventFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <label className="offset-md-2 col-md-4 col-form-label text-left">Дата С+1</label>
-                                <label className="col-md-4 col-form-label text-left">Дата окончания</label>
+                                <label className="offset-md-2 col-md-4 col-form-label text-start">Дата С+1</label>
+                                <label className="col-md-4 col-form-label text-start">Дата окончания</label>
                                 <label className="col-md-2" />
 
                                 <div className="offset-md-2 col-md-4 mt-1">
@@ -184,12 +184,12 @@ export default class EventForm extends Component<any, EventFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <div className="offset-md-2 col-md-8 text-left">Участники события</div>
+                                <div className="offset-md-2 col-md-8 text-start">Участники события</div>
                                 <EventParticipants ref={this.EventParticipants} eventId={id}/>
                             </div>
 
                             <div className="row mb-2">
-                                <div className="offset-md-2 col-md-8 text-left">Прикрепленные документы</div>
+                                <div className="offset-md-2 col-md-8 text-start">Прикрепленные документы</div>
                                 <EventDocs ref={this.EventDocs} eventId={id}/>
                             </div>
 

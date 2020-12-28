@@ -115,9 +115,9 @@ export default class UserForm extends Component<any, UserFormState> {
                     <div className="card-body">
                         <form onSubmit={this.handleSubmit} autoComplete='false'>
                             <div className="row mb-2">
-                                <label className="offset-md-1 col-md-3 col-form-label text-left">Email</label>
-                                <label className="col-md-4 col-form-label text-left">Фамилия</label>
-                                <label className="col-md-3 col-form-label text-left">Имя</label>
+                                <label className="offset-md-1 col-md-3 col-form-label text-start">Email</label>
+                                <label className="col-md-4 col-form-label text-start">Фамилия</label>
+                                <label className="col-md-3 col-form-label text-start">Имя</label>
 
                                 <div className="offset-md-1 col-md-3 mt-1">
                                     <input type="text"
@@ -143,9 +143,9 @@ export default class UserForm extends Component<any, UserFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <label className="offset-md-1 col-md-2 col-form-label text-left">Роль</label>
-                                <label className="col-md-4 col-form-label text-left">Страна</label>
-                                <label className="col-md-4 col-form-label text-left">PIN</label>
+                                <label className="offset-md-1 col-md-2 col-form-label text-start">Роль</label>
+                                <label className="col-md-4 col-form-label text-start">Страна</label>
+                                <label className="col-md-4 col-form-label text-start">PIN</label>
 
                                 <div className="offset-md-1 col-md-2 mt-1">
                                     <FormControl variant="outlined" className="w-100">
@@ -153,7 +153,7 @@ export default class UserForm extends Component<any, UserFormState> {
                                                 id="demo-simple-select-outlined"
                                                 value={roleId}
                                                 onChange={event => this.setState({roleId: parseInt(event.target.value as string)})}
-                                                className="pt-1 text-left padding-bottom-1px">
+                                                className="pt-1 text-start padding-bottom-1px">
                                             {roles.length !== 0 && roles.map((role, index) => {
                                                 return (<MenuItem key={index} value={role.id}>{role.name}</MenuItem>)
                                             })}
@@ -177,7 +177,7 @@ export default class UserForm extends Component<any, UserFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <label className="offset-md-1 col-md-10 col-form-label text-left">Про пользователя</label>
+                                <label className="offset-md-1 col-md-10 col-form-label text-start">Про пользователя</label>
 
                                 <div className="offset-md-1 col-md-10 mt-1">
                                     <textarea
@@ -193,7 +193,7 @@ export default class UserForm extends Component<any, UserFormState> {
                                            autoComplete="false"
                                            checked={confirmed}
                                            onChange={() => this.setState({confirmed: !confirmed})}/>
-                                    <label className="col-form-label text-left py-0 pl-1"
+                                    <label className="col-form-label text-start py-0 ps-1"
                                            onClick={() => this.setState({confirmed: !confirmed})}>
                                         Подтвержденный пользователь
                                     </label>
@@ -201,7 +201,7 @@ export default class UserForm extends Component<any, UserFormState> {
                             </div>
 
                             <div className="row mb-2">
-                                <div className="offset-md-2 col-md-10 text-left">События</div>
+                                <div className="offset-md-2 col-md-10 text-start">События</div>
                                 <UserEvents ref={this.UserEvents} userId={id}/>
                             </div>
 

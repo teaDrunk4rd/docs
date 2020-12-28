@@ -12,7 +12,7 @@ import Button from "@material-ui/core/Button";
 interface UsersState {
     users: Array<any>,
     openDeleteDialog: boolean,
-    deleteEventId?: number,
+    selectedUserId?: number,
     isLoaded: boolean
 }
 
@@ -22,7 +22,7 @@ export default class Users extends Component<any, UsersState> {
         this.state = {
             users: [],
             openDeleteDialog: false,
-            deleteEventId: undefined,
+            selectedUserId: undefined,
             isLoaded: false
         };
     }
@@ -35,6 +35,14 @@ export default class Users extends Component<any, UsersState> {
                     isLoaded: true
                 })
             }
+        });
+    }
+
+    edit(id: number) {
+        this.props.history.push({
+            pathname: "/users/user",
+            search: `?id=${id}`,
+            state: { id: id }
         });
     }
 
@@ -53,7 +61,7 @@ export default class Users extends Component<any, UsersState> {
                 })), 1);
                 this.setState({
                     openDeleteDialog: false,
-                    deleteEventId: undefined
+                    selectedUserId: undefined
                 });
             }
         })
@@ -76,7 +84,7 @@ export default class Users extends Component<any, UsersState> {
                         <th>Роль</th>
                         <th>Страна</th>
                         <th>Подтверждён</th>
-                        <th>Действия</th>
+                        <th/>
                     </tr>
                     </thead>
                     <tbody>
@@ -84,29 +92,34 @@ export default class Users extends Component<any, UsersState> {
                         return (
                             <tr className="cursor-pointer"
                                 key={index}
-                                onClick={() => this.props.history.push({
-                                    pathname: "/users/user",
-                                    search: `?id=${user.id}`,
-                                    state: { id: user.id }
-                                })}>
+                                onClick={() => this.edit(user.id)}>
                                 <td>{user.email}</td>
                                 <td>{user.fullName}</td>
                                 <td>{user.role}</td>
                                 <td>{user.country}</td>
                                 <td>{user.confirmed ? '✓' : '✘'}</td>
-                                <td>
-                                    {
-                                        JSON.parse(localStorage["user"])["id"] !== user.id ? (
-                                            <div className="trash-icon shadow-sm ml-4"
-                                                 onClick={(e) => {
-                                                     e.stopPropagation();
-                                                     this.setState({
+                                <td onClick={(e) => e.stopPropagation()}>
+                                    <div className="dropdown">
+                                        <div className="dots-icon"
+                                             id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" />
+                                        <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <div className="dropdown-item"
+                                                     onClick={() => this.edit(user.id)}>
+                                                    Редактировать
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div className="dropdown-item"
+                                                     onClick={() => this.setState({
                                                          openDeleteDialog: true,
-                                                         deleteEventId: user.id
-                                                     });
-                                                 }}/>
-                                        ) : <div/>
-                                    }
+                                                         selectedUserId: user.id
+                                                     })}>
+                                                    Удалить
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         )
@@ -116,7 +129,7 @@ export default class Users extends Component<any, UsersState> {
 
                 <Dialog
                     open={this.state.openDeleteDialog}
-                    onClose={() => this.setState({openDeleteDialog: false, deleteEventId: undefined})}
+                    onClose={() => this.setState({openDeleteDialog: false, selectedUserId: undefined})}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description">
                     <DialogTitle id="alert-dialog-title">Подтверждение удаления</DialogTitle>
@@ -126,11 +139,11 @@ export default class Users extends Component<any, UsersState> {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => this.setState({openDeleteDialog: false, deleteEventId: undefined})}
+                        <Button onClick={() => this.setState({openDeleteDialog: false, selectedUserId: undefined})}
                                 color="default">
                             Отмена
                         </Button>
-                        <Button onClick={() => this.delete(this.state.deleteEventId)} color="secondary">
+                        <Button onClick={() => this.delete(this.state.selectedUserId)} color="secondary">
                             Удалить
                         </Button>
                     </DialogActions>

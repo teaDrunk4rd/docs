@@ -5,6 +5,7 @@ import {Router} from "./Router";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactNotification from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
+import "bootstrap";
 
 export default class App extends Component {
     render() {

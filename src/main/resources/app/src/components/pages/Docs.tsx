@@ -12,7 +12,7 @@ import Button from "@material-ui/core/Button";
 interface DocsState {
     docs: Array<any>,
     openDeleteDialog: boolean,
-    deleteEventId?: number,
+    selectedDocId?: number,
     isLoaded: boolean
 }
 
@@ -22,7 +22,7 @@ export default class Docs extends Component<any, DocsState> {
         this.state = {
             docs: [],
             openDeleteDialog: false,
-            deleteEventId: undefined,
+            selectedDocId: undefined,
             isLoaded: false
         };
     }
@@ -35,6 +35,15 @@ export default class Docs extends Component<any, DocsState> {
                     isLoaded: true
                 })
             }
+        });
+    }
+
+    edit(id: number) {
+        this.props.history.push({
+            pathname: JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" ?
+                "docs/docForm" : "docs/doc",
+            search: `?id=${id}`,
+            state: {id: id}
         });
     }
 
@@ -53,7 +62,7 @@ export default class Docs extends Component<any, DocsState> {
                 })), 1);
                 this.setState({
                     openDeleteDialog: false,
-                    deleteEventId: undefined
+                    selectedDocId: undefined
                 });
             }
         })
@@ -84,7 +93,7 @@ export default class Docs extends Component<any, DocsState> {
                         <th>День</th>
                         <th>Роль</th>
                         <th>Подписан</th>
-                        <th>Действия</th>
+                        <th/>
                     </tr>
                     </thead>
                     <tbody>
@@ -92,25 +101,33 @@ export default class Docs extends Component<any, DocsState> {
                         return (
                             <tr className="cursor-pointer"
                                 key={index}
-                                onClick={() => this.props.history.push({
-                                    pathname: JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" ?
-                                        "docs/docForm" : "docs/doc",
-                                    search: `?id=${doc.id}`,
-                                    state: { id: doc.id }
-                                })}>
+                                onClick={() => this.edit(doc.id)}>
                                 <td>{doc.doc}</td>
                                 <td>{doc.day}</td>
                                 <td>{doc.role}</td>
                                 <td>{doc.signed ? '✓' : '✘'}</td>
-                                <td>
-                                    <div className="trash-icon shadow-sm ml-4"
-                                         onClick={(e) => {
-                                             e.stopPropagation();
-                                             this.setState({
-                                                 openDeleteDialog: true,
-                                                 deleteEventId: doc.id
-                                             });
-                                         }}/>
+                                <td onClick={(e) => e.stopPropagation()}>
+                                    <div className="dropdown">
+                                        <div className="dots-icon"
+                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" />
+                                        <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <div className="dropdown-item"
+                                                     onClick={() => this.edit(doc.id)}>
+                                                    Редактировать
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div className="dropdown-item"
+                                                     onClick={() => this.setState({
+                                                         openDeleteDialog: true,
+                                                         selectedDocId: doc.id
+                                                     })}>
+                                                    Удалить
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         )
@@ -120,7 +137,7 @@ export default class Docs extends Component<any, DocsState> {
 
                 <Dialog
                     open={this.state.openDeleteDialog}
-                    onClose={() => this.setState({openDeleteDialog: false, deleteEventId: undefined})}
+                    onClose={() => this.setState({openDeleteDialog: false, selectedDocId: undefined})}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description">
                     <DialogTitle id="alert-dialog-title">Подтверждение удаления</DialogTitle>
@@ -130,11 +147,11 @@ export default class Docs extends Component<any, DocsState> {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => this.setState({openDeleteDialog: false, deleteEventId: undefined})}
+                        <Button onClick={() => this.setState({openDeleteDialog: false, selectedDocId: undefined})}
                                 color="default">
                             Отмена
                         </Button>
-                        <Button onClick={() => this.delete(this.state.deleteEventId)} color="secondary">
+                        <Button onClick={() => this.delete(this.state.selectedDocId)} color="secondary">
                             Удалить
                         </Button>
                     </DialogActions>

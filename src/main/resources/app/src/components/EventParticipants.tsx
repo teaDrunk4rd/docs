@@ -81,7 +81,7 @@ export default class EventParticipants extends Component<ParticipantsProps, Part
 
                 {
                     !this.props.readonly ? (
-                        <div className='ml-4 mt-2'>
+                        <div className='ms-4 mt-2'>
                             <div className="add-icon shadow mb-3" onClick={() => this.setState({openAddModal: true})} />
                             <div className={`remove-icon shadow ${selectedParticipant == null ? 'disable' : ''}`}
                                  onClick={() => this.setState({openDeleteDialog: true})} />
@@ -119,7 +119,7 @@ export default class EventParticipants extends Component<ParticipantsProps, Part
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                     className="d-flex justify-content-center align-items-center">
-                    <div className="col-md-6 bg-white my-5">
+                    <div className="col-md-6 bg-white my-5 px-3">
                         <div className="mt-2">
                             <i>Отметьте пользователей, которых Вы хотите записать</i>
                         </div>

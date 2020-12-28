@@ -86,7 +86,7 @@ export default class EventDocs extends Component<EventDocsProps, EventDocsState>
 
                 {
                     !this.props.readonly ? (
-                        <div className='ml-4 mt-2'>
+                        <div className='ms-4 mt-2'>
                             <div className="add-icon shadow mb-3" onClick={() => this.setState({openAddModal: true})} />
                             <div className={`remove-icon shadow ${selectedDoc == null ? 'disable' : ''}`}
                                  onClick={() => this.setState({openDeleteDialog: true})} />
@@ -124,7 +124,7 @@ export default class EventDocs extends Component<EventDocsProps, EventDocsState>
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                     className="d-flex justify-content-center align-items-center">
-                    <div className="col-md-6 bg-white my-5">
+                    <div className="col-md-6 bg-white my-5 px-3">
                         <div className="mt-2">
                             <i>Отметьте документы, которые Вы хотите прикрепить к событию</i>
                         </div>
