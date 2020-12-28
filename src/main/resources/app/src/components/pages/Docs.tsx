@@ -93,7 +93,7 @@ export default class Docs extends Component<any, DocsState> {
                         <th>День</th>
                         <th>Роль</th>
                         <th>Подписан</th>
-                        <th/>
+                        {JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" && <th/>}
                     </tr>
                     </thead>
                     <tbody>
@@ -106,29 +106,32 @@ export default class Docs extends Component<any, DocsState> {
                                 <td>{doc.day}</td>
                                 <td>{doc.role}</td>
                                 <td>{doc.signed ? '✓' : '✘'}</td>
-                                <td onClick={(e) => e.stopPropagation()}>
-                                    <div className="dropdown">
-                                        <div className="dots-icon"
-                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" />
-                                        <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                            <li>
-                                                <div className="dropdown-item"
-                                                     onClick={() => this.edit(doc.id)}>
-                                                    Редактировать
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div className="dropdown-item"
-                                                     onClick={() => this.setState({
-                                                         openDeleteDialog: true,
-                                                         selectedDocId: doc.id
-                                                     })}>
-                                                    Удалить
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
+                                {
+                                    JSON.parse(localStorage["user"])["role"] === "ROLE_ADMIN" &&
+                                    <td onClick={(e) => e.stopPropagation()}>
+                                        <div className="dropdown">
+                                            <div className="dots-icon"
+                                                    id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" />
+                                            <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                                <li>
+                                                    <div className="dropdown-item"
+                                                         onClick={() => this.edit(doc.id)}>
+                                                        Редактировать
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div className="dropdown-item"
+                                                         onClick={() => this.setState({
+                                                             openDeleteDialog: true,
+                                                             selectedDocId: doc.id
+                                                         })}>
+                                                        Удалить
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                }
                             </tr>
                         )
                     })}
